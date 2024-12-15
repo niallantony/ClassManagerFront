@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import { Button } from "../components/Button"
+import { Navbar } from "../components/Navbar"
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-export function Dashboard() {
+export function Layout() {
     const [user, setUser] = useState("")
     const navigate = useNavigate()
 
@@ -35,11 +36,9 @@ export function Dashboard() {
     }
 
     return (<>
-    <div className="Dashboard">
-        <h1>Dashboard</h1>
-        { (user && <p>Welcome {user.firstname} {user.lastname}</p>) || <p>User Not Found</p>}
+    <div className="layout">
+        <Navbar handleLogout={handleLogout} />
         <Outlet />
-        <Button text="Log Out" onClick={handleLogout} />
     </div>
     </>)
 }
