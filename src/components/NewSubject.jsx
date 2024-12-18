@@ -1,4 +1,6 @@
-import { TableTextInput, TextInput } from './Form.jsx'
+import { Button } from './Button.jsx';
+import { ButtonContainer } from './ButtonContainer.jsx';
+import { Form, TextInput } from './Form.jsx'
 import { useState } from "react";
 
 export function NewSubject({cancel, errors, subjectSubmit}) {
@@ -9,18 +11,28 @@ export function NewSubject({cancel, errors, subjectSubmit}) {
     }
     return (
         <>
-        <tr>
-            <td colSpan='2' className='form-row'>
-                <div className='table-form'>
-                    <TableTextInput id="name" error={errors.name} name={name} onChange={setName}/>
-                    <TableTextInput id="textbook" name={errors.textbook} onChange={setTextbook}/>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td className='table-button' onClick={handleSubmit}> Submit </td>
-            <td  className='table-button' onClick={cancel}> Cancel </td>
-        </tr>
+            <Form >
+                <TextInput
+                    type='text'
+                    id='name'
+                    text="Name"
+                    value={name}
+                    onChange={setName}
+                    error={errors.name}
+                    />
+                <TextInput
+                    type='text'
+                    id='textbook'
+                    text="Textbook"
+                    value={textbook}
+                    onChange={setTextbook}
+                    error={errors.textbook}
+                    />
+                <ButtonContainer>
+                    <Button main='true' type='button' text='Add' onClick={handleSubmit}/>
+                    <Button type='button' text='Cancel' onClick={cancel}/>
+                </ButtonContainer>
+            </Form> 
         </>
     )
 }

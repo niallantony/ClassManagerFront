@@ -9,7 +9,7 @@ table {
     margin: 1rem;
 }
 
-td:hover {
+tr:hover {
     background-color: var(--hover);
 }
 

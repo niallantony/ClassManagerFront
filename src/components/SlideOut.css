@@ -1,0 +1,20 @@
+.slide-out {
+    box-sizing:border-box;
+    border-left: solid 1px var(--accent);
+    position: absolute;
+    right: 0;
+    transform: translateX(0);
+    top: 0;
+    background-color: var(--light);
+    height: 100%;
+    color: black;
+    padding: 2rem;
+    width: 400px;
+    transition: transform 1s;
+    overflow: hidden;
+}
+
+.slide-out.hidden {
+    box-sizing: border-box;
+    transform: translateX(400px);
+}

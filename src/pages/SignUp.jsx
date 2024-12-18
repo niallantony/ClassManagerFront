@@ -54,50 +54,48 @@ export function SignUp({onCancel}){
 
     return (
         <Form>
-            <div className={visible ? 'fields animate-open' : 'fields animate-close'}>
-                <TextInput 
-                    type="text" 
-                    id="firstname" 
-                    text="First Name" 
-                    value={firstName} 
-                    onChange={setFirstName} 
-                    error={errorMessages.firstname}
-                    />
-                <TextInput 
-                    type="text" 
-                    id="lastname" 
-                    text="Last Name" 
-                    value={lastName} 
-                    onChange={setLastName} 
-                    error={errorMessages.lastname}
-                    />
-                <TextInput 
-                    type="text" 
-                    id="email" 
-                    text="Email" 
-                    value={email} 
-                    onChange={setEmail} 
-                    error={errorMessages.email}
-                    />
-                <TextInput 
-                    type="password" 
-                    id="password" 
-                    text="Password" 
-                    value={password} 
-                    onChange={setPassword} 
-                    error={errorMessages.password}
-                    />
-                <TextInput 
-                    type="password" 
-                    id="vpassword" 
-                    text="Confirm Password" 
-                    value={confirmPassword} 
-                    onChange={setConfirmPassword} 
-                    error={errorMessages.vpassword}
+            <TextInput 
+                type="text" 
+                id="firstname" 
+                text="First Name" 
+                value={firstName} 
+                onChange={setFirstName} 
+                error={errorMessages.firstname}
                 />
-            </div>
+            <TextInput 
+                type="text" 
+                id="lastname" 
+                text="Last Name" 
+                value={lastName} 
+                onChange={setLastName} 
+                error={errorMessages.lastname}
+                />
+            <TextInput 
+                type="text" 
+                id="email" 
+                text="Email" 
+                value={email} 
+                onChange={setEmail} 
+                error={errorMessages.email}
+                />
+            <TextInput 
+                type="password" 
+                id="password" 
+                text="Password" 
+                value={password} 
+                onChange={setPassword} 
+                error={errorMessages.password}
+                />
+            <TextInput 
+                type="password" 
+                id="vpassword" 
+                text="Confirm Password" 
+                value={confirmPassword} 
+                onChange={setConfirmPassword} 
+                error={errorMessages.vpassword}
+            />
            <ButtonContainer>
-                <Button type="submit" text="Sign Up" onClick={handleSubmit} />
+                <Button type="submit" main="true" text="Sign Up" onClick={handleSubmit} />
                 <Button text="Cancel" onClick={onCancel} />
            </ButtonContainer>
         </ Form>

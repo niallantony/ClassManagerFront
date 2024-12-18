@@ -43,12 +43,10 @@ export function Login({onCancel}) {
 
     return (
         <Form method="POST">
-            <div className={visible ? 'login animate-open' : 'login animate-close'}>
-                <TextInput id="email" text="Email:" onChange={setEmail} value={email} />
-                <TextInput id="password" text="Password:" type="password" onChange={setPassword} value={password}/>
-            </div>
+            <TextInput id="email" text="Email:" onChange={setEmail} value={email} />
+            <TextInput id="password" text="Password:" type="password" onChange={setPassword} value={password}/>
             <ButtonContainer>
-                <Button text="Submit" type="submit" onClick={submit} />
+                <Button text="Submit" main="true" type="submit" onClick={submit} />
                 <Button text="Cancel" onClick={onCancel} />
             </ButtonContainer>
         </Form>

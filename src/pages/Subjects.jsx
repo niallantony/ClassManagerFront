@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react"
-import { v4 as uuid } from 'uuid'
 import { NewSubject } from "../components/NewSubject"
+import { SlideOut } from '../components/SlideOut'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import '../components/Table.css'
+import { AddNewButton, Table, TableRow } from "../components/Table"
+import { SubjectInfo } from "../components/SubjectInfo"
 
 export function Subjects() {
     const [subjects, setSubjects] = useState([])
-    const [newVisible, setNewVisible] = useState(false)
+    const [visible, setVisible] = useState(false)
     const [errors, setErrors] = useState([])
     const [errorMessages, setErrorMessages] = useState({})
     const [newSubjects, setNewSubjects] = useState([])
+    const [slideContent, setSlideContent] = useState(<></>)
 
     useEffect(() => {
         fetch(`${backendUrl}/subjects`, {
@@ -50,7 +53,10 @@ export function Subjects() {
     },[errors])
 
     const handleNew = () => {
-        setNewVisible(true)
+        setSlideContent(
+            <NewSubject errors={errorMessages} cancel={closeNew} subjectSubmit={handleSubmit}/> 
+        )
+        setVisible(true)
     }
 
     const handleSubmit = async (name, textbook) => {
@@ -74,7 +80,7 @@ export function Subjects() {
                 setErrors(res.errors)
             }
             if (res.message === "Successful") {
-                setNewVisible(false)
+                setVisible(false)
                 setNewSubjects([...newSubjects, 1])
             } else {
                 if (res.error.code === "P2002") {
@@ -85,34 +91,31 @@ export function Subjects() {
     }
 
     const closeNew = () => {
-        setNewVisible(false)
-        setErrorMessages({})
+        setVisible(false)
     }
-    const handleSubject = () => {
+    const handleSubject = (id) => {
+        setSlideContent(<SubjectInfo id={id} /> )
+        setVisible(true)
 
     }
 
     return (<div className="subjects-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Textbook</th>
-                </tr>
-            </thead>
-            <tbody>
-            {subjects && subjects.map(subject => {
-                return (<tr key={uuid()} onClick={handleSubject}>
-                            <td>{subject.name}</td>
-                            <td>{subject.textbook}</td>
-                        </tr>)
+        < Table headers={["Name","Textbook"]} >
+            {subjects && subjects.map((subject) => {
+                return (
+                    <TableRow 
+                        key={subject.subject_id}
+                        headers={["name", "textbook"]}
+                        data={subject}
+                        handleClick={() => handleSubject(subject.subject_id)}
+                        />
+                )
             })}
-            {newVisible ? <NewSubject errors={errorMessages} cancel={closeNew} subjectSubmit={handleSubmit}/> :
-                (<tr className="addnew" onClick={handleNew}>
-                    <td colSpan="2">Add new...</td>
-                </tr>)
-            }
-            </tbody>
-        </table>
+            <AddNewButton handleNew={handleNew} />
+        </Table>
+        <SlideOut hidden={visible ? false : true}>
+            {slideContent}
+        </SlideOut>
+        
     </div>)
 }

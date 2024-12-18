@@ -44,11 +44,6 @@ h1.headline {
 }
 
 body {
-    background-color: var(--light);
-    background-image:
-        linear-gradient(to right, var(--light2), transparent 1px),
-        linear-gradient(to bottom, var(--light2), transparent 1px);
-    background-size: 20px 20px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -58,22 +53,25 @@ body {
 
 #root {
     margin:  0;
-    border: solid 1px  var(--accent);
-    border-top: 0;
     display: flex;
     justify-content: center;
-    border-bottom: 0;
-    background-color: var(--light);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     width: 100dvw;
-    max-width: 1024px;
     min-width: fit-content;
     height: 100dvh;
     box-sizing: border-box;
 }
 
+.content {
+    position: relative;
+    flex: 1;
+    background-color: var(--light);
+    color: black;
+}
+
 .layout {
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .subjects-table{

@@ -1,0 +1,10 @@
+button {
+    background-color: var(--light);
+    border: solid 1px var(--accent);
+    color: var(--accent)
+}
+
+button.main {
+    background-color: var(--accent);
+    color: var(--light);
+}

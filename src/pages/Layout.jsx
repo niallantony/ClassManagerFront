@@ -38,7 +38,9 @@ export function Layout() {
     return (<>
     <div className="layout">
         <Navbar handleLogout={handleLogout} />
-        <Outlet />
+        <div className="content">
+            <Outlet />
+        </div>
     </div>
     </>)
 }

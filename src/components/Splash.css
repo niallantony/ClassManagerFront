@@ -7,100 +7,27 @@
     height: fit-content;
     padding: 0;
     align-self: center;
+    background-color: var(--light);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.back-splash {
+    width: 100%;
+    background-color: var(--light);
+    background-image:
+        linear-gradient(to right, var(--light2), transparent 1px),
+        linear-gradient(to bottom, var(--light2), transparent 1px);
+    background-size: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 h1 {
     color: var(--accent);
     margin: 2rem;
 }
 
-.form-container button,
-.button-container button {
-    color: var(--accent);
-    background-color: var(--light);
-    border: solid 1px var(--accent);
-    border-radius: 10px;
-    margin-right: 1rem;
-}
 
-.form-container button:hover,
-.button-container button:hover {
-    border: solid 1px var(--accent);
-    background-color: var(--hover);
-}
-
-.form-container button:focus,
-.button-container button:focus {
-    background-color: var(--light2);
-    border: solid 1px var(--dark-accent)
-}
-
-.form-container form {
-    color: var(--accent);
-    padding: 1rem 0;
-
-}
-
-.error,
-.button-container {
-    grid-column: 1 / 3;
-}
-
-
-.form-container form input {
-    background-color: var(--light);
-    border: solid 1px var(--accent);
-    padding: 0.5rem;
-    color: black;
-}
-
-.button-container a {
-    background-color: var(--accent);
-    color: var(--light);
-    padding: 1rem;
-    border-radius: 15px;
-    margin-right: 1rem;
-
-}
-
-.button-container {
-    padding: 1rem;
-    display:flex;
-    justify-content: center;
-}
-
-.fields,
-.login {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    overflow: hidden;
-}
-
-.animate-open input,
-.animate-close input {
-    height: fit-content;
-}
-
-
-.fields.animate-open {
-    height: 23rem;
-}
-
-.fields.animate-close {
-    height: 0;
-}
-
-.login.animate-open {
-    height: 8rem;
-}
-
-.login.animate-close {
-    height: 0;
-}
-
-.button-container.hidden {
-    display: none;
-}
 
 label {
     margin-right: 1rem;

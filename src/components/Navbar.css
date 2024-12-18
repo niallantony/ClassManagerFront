@@ -29,7 +29,7 @@ nav .nav-link {
     flex: 0;
 }
 
-button {
+nav button {
     background-color: var(--accent);
     color: var(--light);
     border-left:dashed 1px var(--light);
