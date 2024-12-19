@@ -60,7 +60,6 @@ export function SignUp({onCancel}){
                 text="First Name" 
                 value={firstName} 
                 onChange={setFirstName} 
-                error={errorMessages.firstname}
                 />
             <TextInput 
                 type="text" 
@@ -68,7 +67,7 @@ export function SignUp({onCancel}){
                 text="Last Name" 
                 value={lastName} 
                 onChange={setLastName} 
-                error={errorMessages.lastname}
+                error={errorMessages.firstName}
                 />
             <TextInput 
                 type="text" 

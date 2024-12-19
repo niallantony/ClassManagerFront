@@ -1,16 +1,60 @@
 import { Button } from './Button.jsx';
 import { ButtonContainer } from './ButtonContainer.jsx';
 import { Form, TextInput } from './Form.jsx'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-export function NewSubject({cancel, errors, subjectSubmit}) {
+export function NewSubject({cancel, subjectSubmit}){
     const [name, setName] = useState("")
     const [textbook, setTextbook] = useState("")
-    const handleSubmit = () => {
-        subjectSubmit(name, textbook)
+    const [errors, setErrors] = useState([])
+    const [errorMessages, setErrorMessages] = useState([])
+
+    const handleSubmit = async () => {
+        fetch(`${backendUrl}/subjects/new`, {
+            method:"POST",
+            credentials: 'include',
+            body:JSON.stringify({
+                name:name,
+                textbook:textbook,
+            }),
+            headers: {
+                'Content-type':'application/json; charset=UTF-8'
+            },
+
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            if (res.errors) {
+
+                setErrors(res.errors)
+            }
+            if (res.message === "Successful") {
+                subjectSubmit()
+            } else {
+                if (res.errors.length > 0) {
+                    setErrorMessages(res.errors)
+                }
+                else if (res.error.code === "P2002") {
+                    setErrorMessages({name:"Subject Already Exists"})
+                }
+            }
+        })
     }
+
+    useEffect(() => {
+        const messages = {}
+        Object.values(errors).forEach((error) => {
+            messages[error.path] = error.msg
+        })
+        setErrorMessages(messages)
+    },[errors])
+
     return (
         <>
+            <h2>New Subject</h2>
             <Form >
                 <TextInput
                     type='text'
@@ -18,7 +62,7 @@ export function NewSubject({cancel, errors, subjectSubmit}) {
                     text="Name"
                     value={name}
                     onChange={setName}
-                    error={errors.name}
+                    error={errorMessages.name}
                     />
                 <TextInput
                     type='text'
@@ -26,7 +70,82 @@ export function NewSubject({cancel, errors, subjectSubmit}) {
                     text="Textbook"
                     value={textbook}
                     onChange={setTextbook}
-                    error={errors.textbook}
+                    error={errorMessages.textbook}
+                    />
+                <ButtonContainer>
+                    <Button main='true' type='button' text='Add' onClick={handleSubmit}/>
+                    <Button type='button' text='Cancel' onClick={cancel}/>
+                </ButtonContainer>
+            </Form> 
+        </>
+    )
+}
+
+export function EditSubject({cancel, subjectSubmit, currentId, currentName, currentTextbook}){
+    const [name, setName] = useState(currentName)
+    const [textbook, setTextbook] = useState(currentTextbook)
+    const [errors, setErrors] = useState([])
+    const [errorMessages, setErrorMessages] = useState([])
+
+    const handleSubmit = async () => {
+        fetch(`${backendUrl}/subjects/subject/${currentId}`, {
+            method:"PUT",
+            credentials: 'include',
+            body:JSON.stringify({
+                name:name,
+                textbook:textbook,
+            }),
+            headers: {
+                'Content-type':'application/json; charset=UTF-8'
+            },
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((res) => {
+            if (res.errors) {
+                setErrors(res.errors)
+            }
+            if (res.message === "Successful") {
+                subjectSubmit()
+            } else {
+                if (res.errors.length > 0) {
+                    setErrorMessages(res.errors)
+                }
+                else if (res.error.code === "P2002") {
+                    setErrorMessages({name:"Subject Already Exists"})
+                }
+            }
+        })
+    }
+
+    useEffect(() => {
+        const messages = {}
+        Object.values(errors).forEach((error) => {
+            messages[error.path] = error.msg
+        })
+        setErrorMessages(messages)
+    },[errors])
+
+    return (
+        <>
+            <h2>New Subject</h2>
+            <Form >
+                <TextInput
+                    type='text'
+                    id='name'
+                    text="Name"
+                    value={name}
+                    onChange={setName}
+                    error={errorMessages.name}
+                    />
+                <TextInput
+                    type='text'
+                    id='textbook'
+                    text="Textbook"
+                    value={textbook}
+                    onChange={setTextbook}
+                    error={errorMessages.textbook}
                     />
                 <ButtonContainer>
                     <Button main='true' type='button' text='Add' onClick={handleSubmit}/>

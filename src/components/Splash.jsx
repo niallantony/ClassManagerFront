@@ -17,8 +17,8 @@ export function Splash() {
             </h1>
             <Slider height={visible === 0 ? '290' :
                 visible === 1 ? '120' :
-                '500'
-            } width='420' visible={visible}> 
+                '540'
+            } width='520' visible={visible}> 
                 <SignUp onCancel={() => setVisible(1)} />
                 <ButtonContainer>
                     <Button text="Log In" main="true" onClick={() => setVisible(0)} />

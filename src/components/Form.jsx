@@ -8,17 +8,17 @@ export function Form({method, children}) {
 
 export function TextInput({type="text", id, value, onChange, text, error}) {
     return(
-        <>
-        <label htmlFor={id}> {text}
-        </label>
-        <input 
-            id={id}
-            name={id} 
-            type={type} 
-            value={value} 
-            onChange={(event) => onChange(event.target.value)}
-            />
-        <p className="error">{error}</p>
-        </>
+        <div className='text-input'>
+            <label htmlFor={id}> {text}
+            </label>
+            <input 
+                id={id}
+                name={id} 
+                type={type} 
+                value={value} 
+                onChange={(event) => onChange(event.target.value)}
+                />
+            <p className="error">{error}</p>
+        </div>
     )
 }
