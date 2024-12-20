@@ -56,12 +56,12 @@ const NavButton = styled.button`
 `
 
 
-export function Navbar({handleLogout}) {
-    return(<Nav>
+export function Navbar({ handleLogout }) {
+    return (<Nav>
         <MastHead>ClassRoom</MastHead>
         <NavBarLink className="nav-link" to="subjects">Subjects</NavBarLink>
         <NavBarLink className="nav-link" to="lessons">Lessons</NavBarLink>
         <NavBarLink className="nav-link" to="students">Students</NavBarLink>
-        <NavButton text="Log Out" onClick={handleLogout}>Log Out</NavButton>
+        <NavButton onClick={handleLogout}>Log Out</NavButton>
     </Nav>)
 }

@@ -15,14 +15,29 @@ const StyledSlide = styled.div`
     position: absolute;
     box-sizing:border-box;
 `
+const ExitSlide = styled.button`
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    color: ${props => props.theme.accent};
+    background-color: ${props => props.theme.light};
+    border: solid 1px ${props => props.theme.accent};
+    border-radius: 15px;
+    width: 2rem;
+    height: 2rem;
+    &:hover {
+        background-color: ${props => props.theme.hover};
+    }
+`
 
-export function SlideOut({ children, hidden = true, width = "400", }) {
+export function SlideOut({ children, hidden = true, width = "400", closeSlide }) {
     const xOffset = hidden ? width : 0
     return (
         <StyledSlide
             $width={width}
             $xOffset={xOffset}
         >
+            <ExitSlide onClick={closeSlide}>x</ExitSlide>
             {children}
         </StyledSlide>
     )

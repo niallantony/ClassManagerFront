@@ -100,7 +100,7 @@ export function Subjects() {
             })}
             <AddNewButton handleNew={handleNew} />
         </Table>
-        <SlideOut hidden={visible ? false : true}>
+        <SlideOut closeSlide={() => setVisible(false)} hidden={visible ? false : true}>
             {slideContent}
         </SlideOut>
 

@@ -67,8 +67,8 @@ export function TableRow({ headers, data, handleClick }) {
 
 export function AddNewButton({ handleNew }) {
     return (
-        <tr className="addnew" onClick={handleNew}>
+        <StyledTableRow className="addnew" onClick={handleNew}>
             <TableCell colSpan="2">Add new...</TableCell>
-        </tr>
+        </StyledTableRow>
     )
 }

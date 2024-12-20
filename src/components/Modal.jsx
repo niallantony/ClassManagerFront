@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import './Modal.css'
 
 const StyledModal = styled.dialog`
     background-color: white;
