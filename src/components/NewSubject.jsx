@@ -1,4 +1,4 @@
-import { Button } from './Button.jsx';
+import { Button, MainButton } from './Button.jsx';
 import { ButtonContainer } from './ButtonContainer.jsx';
 import { Form, TextInput } from './Form.jsx'
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ export function NewSubject({cancel, subjectSubmit}){
                     error={errorMessages.textbook}
                     />
                 <ButtonContainer>
-                    <Button main='true' type='button' text='Add' onClick={handleSubmit}/>
+                    <MainButton type='button' text='Add' onClick={handleSubmit}/>
                     <Button type='button' text='Cancel' onClick={cancel}/>
                 </ButtonContainer>
             </Form> 
@@ -148,7 +148,7 @@ export function EditSubject({cancel, subjectSubmit, currentId, currentName, curr
                     error={errorMessages.textbook}
                     />
                 <ButtonContainer>
-                    <Button main='true' type='button' text='Add' onClick={handleSubmit}/>
+                    <MainButtonButton type='button' text='Add' onClick={handleSubmit}/>
                     <Button type='button' text='Cancel' onClick={cancel}/>
                 </ButtonContainer>
             </Form> 

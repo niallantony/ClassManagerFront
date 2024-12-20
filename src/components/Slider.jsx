@@ -1,25 +1,47 @@
-import './Slider.css'
+import styled from 'styled-components';
+
+const SlideFrame = styled.div`
+    z-index: 9;
+    overflow: hidden;
+    transition: height 1s;
+`
+
+const SlideElements = styled.div`
+    z-index: 0;
+    overflow: hidden;
+    display: flex;
+    transition: transform 1s ;
+`
+
+const SlideElement = styled.div`
+    padding: 1rem;
+    display:flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: start;
+`
 
 export function Slider({children, height, width, visible}) {
 
     const totalWidth = width * children.length;
     const transX = (visible - 2) * width;
 
-    return (<div className="slide-frame" style={{
+    return (<SlideFrame style={{
         height:+height,
         width: +width,
         }}
         >
-        <div className="slide-elements" style={{
+        <SlideElements style={{
             width: totalWidth,
             transform: `translateX(${transX}px)`,
         }}>
             {children.map((child) => {
-                return (<div key={children.indexOf(child)} className="slide-element" style={{width:+width}}>
+                return (<SlideElement key={children.indexOf(child)} style={{width:+width}}>
                     {child}
-                    </div>)
+                    </SlideElement>)
                     }
             )}
-        </div>
-    </div>)
+        </SlideElements>
+    </SlideFrame>)
 }

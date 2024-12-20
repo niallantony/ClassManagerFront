@@ -7,9 +7,21 @@ import { Layout } from './pages/Layout'
 import { BrowserRouter, Routes, Route  } from 'react-router-dom'
 import { Dashboard } from './pages/Dashboard'
 import { Subjects } from './pages/Subjects'
+import { ThemeProvider } from 'styled-components'
+
+const theme = {
+  dark:"#353535",
+  accent:"#3C6E71",
+  light:"#FFFFFF",
+  hover:"#d7dddd",
+  light2:"#c9d2d4",
+  error:"#d46565",
+  darkAccent:"#284b53",
+}
+
 function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={ <Loader /> } />
@@ -23,7 +35,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   )
 }
 

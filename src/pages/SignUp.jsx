@@ -1,5 +1,5 @@
 import { Form, TextInput } from "../components/Form"
-import { Button } from "../components/Button"
+import { Button, MainButton} from "../components/Button"
 import { useState, useEffect } from "react"
 import { ButtonContainer } from "../components/ButtonContainer"
 const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -94,8 +94,9 @@ export function SignUp({onCancel}){
                 error={errorMessages.vpassword}
             />
            <ButtonContainer>
-                <Button type="submit" main="true" text="Sign Up" onClick={handleSubmit} />
+                <MainButton type="submit" text="Sign Up" onClick={handleSubmit} />
                 <Button text="Cancel" onClick={onCancel} />
+
            </ButtonContainer>
         </ Form>
     )

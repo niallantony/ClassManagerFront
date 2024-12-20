@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import '../App.css'
 import { Form, TextInput} from '../components/Form'
-import { Button } from '../components/Button'
+import { Button, MainButton } from '../components/Button'
 import { useNavigate } from 'react-router-dom'
 import { ButtonContainer } from '../components/ButtonContainer'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -9,14 +9,9 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
 export function Login({onCancel}) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [visible, setVisible] = useState(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        setVisible(true)
-    },[])
-
-    const submit = async ( event ) => {
+    const submit = async () => {
         await fetch(`${backendUrl}/user/login`, {
             method:"POST",
             body: JSON.stringify({
@@ -46,7 +41,7 @@ export function Login({onCancel}) {
             <TextInput id="email" text="Email:" onChange={setEmail} value={email} />
             <TextInput id="password" text="Password:" type="password" onChange={setPassword} value={password}/>
             <ButtonContainer>
-                <Button text="Submit" main="true" type="submit" onClick={submit} />
+                <MainButton text="Submit" main="true" type="submit" onClick={submit} />
                 <Button text="Cancel" onClick={onCancel} />
             </ButtonContainer>
         </Form>
