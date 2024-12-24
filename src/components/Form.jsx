@@ -39,43 +39,66 @@ const Error = styled.p`
     height: 3rem;
     grid-column: 1 / 3;
 `
+const Select = styled.select`
+    padding: 0.5rem;
+    border-radius: 5px;
+`
+const Option = styled.option`
+
+`
 
 export function Form({ method, children }) {
-    return (<StyledForm method={method}>
-        {children}
-    </StyledForm>)
+  return (<StyledForm method={method}>
+    {children}
+  </StyledForm>)
 }
 
 export function TextInput({ type = "text", id, value, onChange, text, error }) {
-    return (
-        <StyledInput className='text-input'>
-            <Label htmlFor={id}> {text}
-            </Label>
-            <Input
-                id={id}
-                name={id}
-                type={type}
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-            />
-            <Error className="error">{error}</Error>
-        </StyledInput>
-    )
+  return (
+    <StyledInput className='text-input'>
+      <Label htmlFor={id}> {text}
+      </Label>
+      <Input
+        id={id}
+        name={id}
+        type={type}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      <Error className="error">{error}</Error>
+    </StyledInput>
+  )
 }
 
 export function TextArea({ onChange, id, error, value, text, rows }) {
-    return (
-        <StyledInput className='text-input'>
-            <Label htmlFor={id}> {text}
-            </Label>
-            <StyledTextArea
-                id={id}
-                rows={rows}
-                name={id}
-                value={value || ""}
-                onChange={(event) => onChange(event.target.value)}
-            ></StyledTextArea>
-            <Error className="error">{error}</Error>
-        </StyledInput>
-    )
+  return (
+    <StyledInput className='text-input'>
+      <Label htmlFor={id}> {text}
+      </Label>
+      <StyledTextArea
+        id={id}
+        rows={rows}
+        name={id}
+        value={value || ""}
+        onChange={(event) => onChange(event.target.value)}
+      ></StyledTextArea>
+      <Error className="error">{error}</Error>
+    </StyledInput>
+  )
+}
+
+export function SelectInput({ text, error, value, id, options, onChange }) {
+
+  return (
+    <StyledInput>
+      <Label htmlFor={id}>{text}
+      </Label>
+      <Select value={value} name={id} id={id} onChange={(event) => onChange(event.target.value)}>
+        {options && options.map((option) =>
+          <Option key={option.value} value={option.value}>{option.name || option.value}</Option>
+        )}
+      </Select>
+      <Error className="error">{error}</Error>
+    </StyledInput>
+  )
 }
