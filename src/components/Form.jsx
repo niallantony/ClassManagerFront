@@ -40,6 +40,8 @@ const Error = styled.p`
     grid-column: 1 / 3;
 `
 const Select = styled.select`
+    color: ${props => props.theme.dark};
+    background-color: ${props => props.theme.light};
     padding: 0.5rem;
     border-radius: 5px;
 `
