@@ -1,10 +1,10 @@
 import { useState } from "react"
 import styled from 'styled-components'
-import { SignUp } from "../pages/SignUp"
-import { Login } from "../pages/Login"
-import { Button, MainButton } from "./Button"
-import { Slider } from "./Slider"
-import { ButtonContainer } from "./ButtonContainer"
+import { SignUp } from "./SignUp"
+import { Login } from "./Login"
+import { Button, MainButton } from "../components/Button"
+import { Slider } from "../components/Slider"
+import { ButtonContainer } from "../components/ButtonContainer"
 
 const SplashFrame = styled.div`
     display: flex;

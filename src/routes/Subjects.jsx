@@ -67,6 +67,7 @@ export function Subjects() {
             currentId={subject.subject_id}
             currentName={subject.name}
             currentTextbook={subject.textbook}
+            currentDescription={subject.description}
             subjectSubmit={handleSubmit}
             cancel={closeNew}
         />)
@@ -87,7 +88,7 @@ export function Subjects() {
     }
 
     return (<div className="subjects-table">
-        < Table headers={["Name", "Textbook"]} >
+        < Table headers={[{ name: "Name" }, { name: "Textbook" }]} >
             {subjects && subjects.map((subject) => {
                 return (
                     <TableRow

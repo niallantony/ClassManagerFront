@@ -12,6 +12,11 @@ const MastHead = styled.h1`
     align-self:center;
 `
 
+const User = styled.p`
+    color: ${props => props.theme.light};
+    padding: 0 2rem;
+`
+
 const Nav = styled.nav`
     border-bottom: solid 1px ${props => props.theme.accent};
     background-color: ${props => props.theme.accent};
@@ -56,9 +61,10 @@ const NavButton = styled.button`
 `
 
 
-export function Navbar({ handleLogout }) {
+export function Navbar({ handleLogout, user }) {
     return (<Nav>
         <MastHead>ClassRoom</MastHead>
+        <User>Welcome {user.firstname}</User>
         <NavBarLink className="nav-link" to="subjects">Subjects</NavBarLink>
         <NavBarLink className="nav-link" to="lessons">Lessons</NavBarLink>
         <NavBarLink className="nav-link" to="students">Students</NavBarLink>

@@ -1,11 +1,20 @@
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
-    color: var(--accent);
+    color: ${props => props.theme.accent};
     padding: 1rem 0;
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+const StyledTextArea = styled.textarea`
+    resize:none;
+    font-family: "Arial", sans-serif;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    background-color: ${props => props.theme.light};
+    color: ${props => props.theme.dark};
 `
 const StyledInput = styled.div`
     display: grid;
@@ -28,26 +37,44 @@ const Error = styled.p`
     color: ${props => props.theme.error};
     margin: 0;
     height: 3rem;
+    grid-column: 1 / 3;
 `
 
-export function Form({method, children}) {
+export function Form({ method, children }) {
     return (<StyledForm method={method}>
         {children}
     </StyledForm>)
 }
 
-export function TextInput({type="text", id, value, onChange, text, error}) {
-    return(
+export function TextInput({ type = "text", id, value, onChange, text, error }) {
+    return (
         <StyledInput className='text-input'>
             <Label htmlFor={id}> {text}
             </Label>
-            <Input 
+            <Input
                 id={id}
-                name={id} 
-                type={type} 
-                value={value} 
+                name={id}
+                type={type}
+                value={value}
                 onChange={(event) => onChange(event.target.value)}
-                />
+            />
+            <Error className="error">{error}</Error>
+        </StyledInput>
+    )
+}
+
+export function TextArea({ onChange, id, error, value, text, rows }) {
+    return (
+        <StyledInput className='text-input'>
+            <Label htmlFor={id}> {text}
+            </Label>
+            <StyledTextArea
+                id={id}
+                rows={rows}
+                name={id}
+                value={value || ""}
+                onChange={(event) => onChange(event.target.value)}
+            ></StyledTextArea>
             <Error className="error">{error}</Error>
         </StyledInput>
     )

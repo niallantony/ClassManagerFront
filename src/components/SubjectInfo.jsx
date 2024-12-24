@@ -1,7 +1,7 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import { useEffect, useState } from "react"
-import { ButtonContainer } from "./ButtonContainer"
 import { Button, NavButton } from "./Button"
+import { ButtonContainer } from "./ButtonContainer"
 import { Modal } from "./Modal"
 
 export function SubjectInfo({ id, deleteSubject, editSubject }) {

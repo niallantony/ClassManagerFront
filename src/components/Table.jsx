@@ -1,13 +1,18 @@
 import styled from 'styled-components'
 
+const StyledTableContainer = styled.div`
+    flex:1;
+`
+
 const StyledTable = styled.table`
     border-radius: 16px 16px 0 0;
     font-family: "Unna", serif;
-    flex:1;
     border-spacing: 0;
-    border-collapse: separate;
     overflow: hidden;
     margin: 1rem;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
 `
 const TableHeader = styled.th`
     border: solid 1px ${props => props.theme.accent};
@@ -18,16 +23,21 @@ const TableHeader = styled.th`
     text-align: left;
     padding: 1rem;
     border-bottom: solid 1px ${props => props.theme.accent};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const StyledTableRow = styled.tr`
     &:hover {
         background-color: ${props => props.theme.hover}
     }
-
 `
 
 const TableCell = styled.td`
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 1rem;
     border-bottom: solid 1px ${props => props.theme.accent};
     color: black;
@@ -35,20 +45,35 @@ const TableCell = styled.td`
 
 export function Table({ children, headers }) {
     return (
-        <StyledTable>
-            <thead>
-                <tr>
-                    {headers.map((header) => {
-                        return (
-                            <TableHeader key={header}>{header}</TableHeader>
-                        )
-                    })}
-                </tr>
-            </thead>
-            <tbody>
-                {children}
-            </tbody>
-        </StyledTable>
+        <StyledTableContainer>
+            <StyledTable>
+                <thead>
+                    <tr>
+                        {headers.map((header) => {
+                            if (Object.keys(header).includes("width")) {
+                                return (
+                                    <TableHeader
+                                        width={header.width}
+                                        key={header}
+                                    >
+                                        {header.name}
+                                    </TableHeader>
+                                )
+                            } else {
+                                return (
+                                    <TableHeader key={header.name}>
+                                        {header.name}
+                                    </TableHeader>
+                                )
+                            }
+                        })}
+                    </tr>
+                </thead>
+                <tbody>
+                    {children}
+                </tbody>
+            </StyledTable>
+        </StyledTableContainer>
     )
 }
 

@@ -28,6 +28,7 @@ const StyledNavButton = styled(NavLink)`
     background-color: ${props => props.theme.light};
     border: solid 1px ${props => props.theme.accent};
     color: ${props => props.theme.accent};
+    text-decoration: none;
     padding:1rem;
     border-radius:15px;
     &:hover {

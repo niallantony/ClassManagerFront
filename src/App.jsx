@@ -1,14 +1,15 @@
 import './App.css'
-import { Login } from './pages/Login'
-import { Splash } from './components/Splash'
-import { Loader } from './pages/Loader'
-import { SignUp } from './pages/SignUp'
-import { Layout } from './pages/Layout'
+import { Login } from './routes/Login'
+import { Splash } from './routes/Splash'
+import { Loader } from './routes/Loader'
+import { SignUp } from './routes/SignUp'
+import { Layout } from './routes/Layout'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Dashboard } from './pages/Dashboard'
-import { Subjects } from './pages/Subjects'
+import { Dashboard } from './routes/Dashboard'
+import { Subjects } from './routes/Subjects'
 import { ThemeProvider } from 'styled-components'
-import { SubjectPage } from './pages/SubjectPage'
+import { SubjectPage } from './routes/SubjectPage'
+import { DisplayError } from './routes/DisplayError'
 
 const theme = {
     dark: "#353535",
@@ -35,7 +36,9 @@ function App() {
                         <Route path="subjects" >
                             <Route index element={<Subjects />} />
                             <Route path='subject/:subject_id' element={<SubjectPage />} />
+                            <Route path='notfound' element={<DisplayError code="400" message="Subject Not Found" />} />
                         </ Route>
+                        <Route path='*' element={<DisplayError code="404" message="Page Not Found" />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

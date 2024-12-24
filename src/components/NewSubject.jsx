@@ -1,12 +1,14 @@
-import { Button, MainButton } from './Button.jsx';
+import { MainButton } from './Button.jsx';
 import { ButtonContainer } from './ButtonContainer.jsx';
-import { Form, TextInput } from './Form.jsx'
+import { Form, TextArea, TextInput } from './Form.jsx'
 import { useEffect, useState } from "react";
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
-export function NewSubject({ cancel, subjectSubmit }) {
+export function NewSubject({ subjectSubmit }) {
     const [name, setName] = useState("")
     const [textbook, setTextbook] = useState("")
+    const [description, setDescription] = useState("")
+    const [weeks, setWeeks] = useState("0")
     const [errors, setErrors] = useState([])
     const [errorMessages, setErrorMessages] = useState([])
 
@@ -17,6 +19,8 @@ export function NewSubject({ cancel, subjectSubmit }) {
             body: JSON.stringify({
                 name: name,
                 textbook: textbook,
+                description: description,
+                weeks: weeks,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -72,6 +76,22 @@ export function NewSubject({ cancel, subjectSubmit }) {
                     onChange={setTextbook}
                     error={errorMessages.textbook}
                 />
+                <TextInput
+                    type='number'
+                    id='weeks'
+                    text="Weeks:"
+                    value={weeks}
+                    onChange={setWeeks}
+                    error={errorMessages.weeks}
+                />
+                <TextArea
+                    id='description'
+                    rows='4'
+                    text="Description"
+                    value={description}
+                    onChange={setDescription}
+                    error={errorMessages.description}
+                />
                 <ButtonContainer>
                     <MainButton type='button' onClick={handleSubmit} >Add</MainButton>
                 </ButtonContainer>
@@ -80,9 +100,10 @@ export function NewSubject({ cancel, subjectSubmit }) {
     )
 }
 
-export function EditSubject({ subjectSubmit, currentId, currentName, currentTextbook }) {
+export function EditSubject({ subjectSubmit, currentId, currentName, currentTextbook, currentDescription }) {
     const [name, setName] = useState(currentName)
     const [textbook, setTextbook] = useState(currentTextbook)
+    const [description, setDescription] = useState(currentDescription)
     const [errors, setErrors] = useState([])
     const [errorMessages, setErrorMessages] = useState([])
 
@@ -93,6 +114,7 @@ export function EditSubject({ subjectSubmit, currentId, currentName, currentText
             body: JSON.stringify({
                 name: name,
                 textbook: textbook,
+                description: description,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -128,7 +150,7 @@ export function EditSubject({ subjectSubmit, currentId, currentName, currentText
 
     return (
         <>
-            <h2>New Subject</h2>
+            <h2>Edit Subject</h2>
             <Form >
                 <TextInput
                     type='text'
@@ -146,8 +168,16 @@ export function EditSubject({ subjectSubmit, currentId, currentName, currentText
                     onChange={setTextbook}
                     error={errorMessages.textbook}
                 />
+                <TextArea
+                    id='description'
+                    rows='4'
+                    text="Description"
+                    value={description}
+                    onChange={setDescription}
+                    error={errorMessages.description}
+                />
                 <ButtonContainer>
-                    <MainButton type='button' onClick={handleSubmit}>Add </MainButton>
+                    <MainButton type='button' onClick={handleSubmit}>Submit</MainButton>
                 </ButtonContainer>
             </Form>
         </>
