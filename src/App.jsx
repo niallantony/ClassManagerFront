@@ -11,6 +11,7 @@ import { ThemeProvider } from 'styled-components'
 import { SubjectPage } from './routes/SubjectPage'
 import { DisplayError } from './routes/DisplayError'
 import { Lessons } from './routes/Lessons'
+import { LessonPage } from './routes/LessonPage'
 
 const theme = {
   dark: "#353535",
@@ -41,6 +42,7 @@ function App() {
             </ Route>
             <Route path="lessons">
               <Route index element={<Lessons />} />
+              <Route path='lesson/:lesson_id' element={<LessonPage />} />
             </Route>
             <Route path='*' element={<DisplayError code="404" message="Page Not Found" />} />
           </Route>
