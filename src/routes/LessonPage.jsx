@@ -4,7 +4,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
 import styled from 'styled-components'
 import { Header1, Header2 } from '../components/Header';
 import { ButtonContainer } from '../components/ButtonContainer';
-import { NavButton } from '../components/Button';
+import { Button, NavButton } from '../components/Button';
 import { useParams } from 'react-router-dom';
 
 
@@ -13,7 +13,7 @@ export const LessonDiv = styled.div`
   flexDirection: 'column',
 `;
 
-export function LessonPageSide({ lesson_id }) {
+export function LessonPageSide({ lesson_id, editLesson }) {
   const [lesson, setLesson] = useState({})
 
   useEffect(() => {
@@ -31,6 +31,11 @@ export function LessonPageSide({ lesson_id }) {
       })
   }, [])
 
+  const handleEdit = () => {
+    editLesson(lesson)
+  }
+
+
   return (
     <>
       <Header1 under={true}>
@@ -46,6 +51,7 @@ export function LessonPageSide({ lesson_id }) {
         <li>Class starts: {new Date(lesson.class_start).getHours()}:{new Date(lesson.class_start).getMinutes()}</li>
       </ul>
       <ButtonContainer>
+        <Button onClick={handleEdit}>Edit</Button>
         <NavButton to={`/dash/lessons/lesson/${lesson.lesson_id}`}>View</NavButton>
       </ButtonContainer>
     </>

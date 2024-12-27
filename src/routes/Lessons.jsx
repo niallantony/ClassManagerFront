@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SlideOut } from '../components/SlideOut'
 import { AddNewButton, Table, TableRow } from "../components/Table"
-import { NewLesson } from './NewLesson'
+import { EditLesson, NewLesson } from './NewLesson'
 import { LessonPageSide } from './LessonPage'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -22,10 +22,15 @@ export function Lessons() {
         }
       })
 
-  }, [])
+  }, [slideContent])
 
   const handleLesson = (lesson_id) => {
-    setSlideContent(<LessonPageSide lesson_id={lesson_id} />)
+    setSlideContent(<LessonPageSide editLesson={handleEdit} lesson_id={lesson_id} />)
+    setHidden(false)
+  }
+
+  const handleEdit = (lesson) => {
+    setSlideContent(<EditLesson lessonSubmit={handleSubmit} currentdetails={lesson} />)
     setHidden(false)
   }
 

@@ -11,7 +11,7 @@ export function NewLesson({ lessonSubmit }) {
   const [subjects, setSubjects] = useState([])
   const [year, setYear] = useState("")
   const [semester, setSemester] = useState("")
-  const [classStart, setClassStart] = useState("")
+  const [classStart, setClassStart] = useState("09:00")
   const [classroom, setClassroom] = useState("")
   const [attendance, setAttendance] = useState("")
   const [errors, setErrors] = useState([])
@@ -148,21 +148,28 @@ export function NewLesson({ lessonSubmit }) {
   )
 }
 
-export function EditLesson({ lessonSubmit, currentId, currentName, currentTextbook, currentDescription }) {
-  const [name, setName] = useState(currentName)
-  const [textbook, setTextbook] = useState(currentTextbook)
-  const [description, setDescription] = useState(currentDescription)
+// TODO: Include
+export function EditLesson({
+  lessonSubmit,
+  currentdetails
+}) {
+  const [name, setName] = useState(currentdetails.name)
+  const [classStart, setClassStart] = useState(new Date(currentdetails.class_start).toTimeString().substring(0, 5))
+  const [classroom, setClassroom] = useState(currentdetails.classroom)
+  const [attendance, setAttendance] = useState(currentdetails.attendance)
   const [errors, setErrors] = useState([])
   const [errorMessages, setErrorMessages] = useState([])
 
+
   const handleSubmit = async () => {
-    fetch(`${backendUrl}/lessons/lesson/${currentId}`, {
+    fetch(`${backendUrl}/lessons/lesson/${currentdetails.lesson_id}`, {
       method: "PUT",
       credentials: 'include',
       body: JSON.stringify({
         name: name,
-        textbook: textbook,
-        description: description,
+        class_start: classStart,
+        classroom: classroom,
+        attendance: attendance,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
@@ -181,7 +188,7 @@ export function EditLesson({ lessonSubmit, currentId, currentName, currentTextbo
           if (res.errors.length > 0) {
             setErrorMessages(res.errors)
           }
-          else if (res.error.code === "P2002") {
+          else if (res.errors.code === "P2002") {
             setErrorMessages({ name: "Lesson Already Exists" })
           }
         }
@@ -210,22 +217,54 @@ export function EditLesson({ lessonSubmit, currentId, currentName, currentTextbo
         />
         <TextInput
           type='text'
-          id='textbook'
-          text="Textbook"
-          value={textbook}
-          onChange={setTextbook}
-          error={errorMessages.textbook}
+          id='year'
+          text="Year"
+          disabled={true}
+          value={currentdetails.year}
+          error={errorMessages.year}
         />
-        <TextArea
-          id='description'
-          rows='4'
-          text="Description"
-          value={description}
-          onChange={setDescription}
-          error={errorMessages.description}
+        <TextInput
+          type='number'
+          id='semester'
+          text="Semester"
+          disabled={true}
+          value={currentdetails.semester}
+          error={errorMessages.semester}
+        />
+        <TextInput
+          type='time'
+          id='class_start'
+          text="Class Start"
+          value={classStart}
+          onChange={setClassStart}
+          error={errorMessages.class_start}
+        />
+        <TextInput
+          type='number'
+          id='attendance'
+          text="Attendance"
+          value={attendance}
+          onChange={setAttendance}
+          error={errorMessages.attendance}
+        />
+        <TextInput
+          type='text'
+          id='classroom'
+          text="Classroom"
+          value={classroom}
+          onChange={setClassroom}
+          error={errorMessages.classroom}
+        />
+        <SelectInput
+          text='Subject'
+          value={currentdetails.subjects.name}
+          id='subject'
+          options={[{ value: currentdetails.subjects.name }]}
+          disabled={true}
+          error={errorMessages.subject}
         />
         <ButtonContainer>
-          <MainButton type='button' onClick={handleSubmit}>Submit</MainButton>
+          <MainButton type='button' onClick={handleSubmit} >Add</MainButton>
         </ButtonContainer>
       </Form>
     </>
