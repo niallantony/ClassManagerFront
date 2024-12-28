@@ -25,6 +25,7 @@ export function NewLesson({ lessonSubmit }) {
       .then(res => res.json())
       .then(res => {
         setSubjects(res.subjects)
+        setSubject(res.subjects[0].value)
       })
       .catch(e => {
         console.log(e)
@@ -138,7 +139,7 @@ export function NewLesson({ lessonSubmit }) {
           id='subject'
           options={subjects}
           onChange={setSubject}
-          error={errorMessages.subject}
+          error={errorMessages.subject_id}
         />
         <ButtonContainer>
           <MainButton type='button' onClick={handleSubmit} >Add</MainButton>
@@ -148,7 +149,6 @@ export function NewLesson({ lessonSubmit }) {
   )
 }
 
-// TODO: Include
 export function EditLesson({
   lessonSubmit,
   currentdetails

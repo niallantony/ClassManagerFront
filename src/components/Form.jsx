@@ -52,6 +52,13 @@ const Select = styled.select`
 const Option = styled.option`
 
 `
+export function ErrorDiv({ children }) {
+  return (
+    <Error>
+      {children}
+    </Error>
+  )
+}
 
 export function Form({ method, children }) {
   return (<StyledForm method={method}>

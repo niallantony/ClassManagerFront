@@ -25,7 +25,7 @@ export function Lessons() {
   }, [slideContent])
 
   const handleLesson = (lesson_id) => {
-    setSlideContent(<LessonPageSide editLesson={handleEdit} lesson_id={lesson_id} />)
+    setSlideContent(<LessonPageSide editLesson={handleEdit} onDelete={handleSubmit} lesson_id={lesson_id} />)
     setHidden(false)
   }
 

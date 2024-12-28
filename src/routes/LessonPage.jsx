@@ -6,6 +6,8 @@ import { Header1, Header2 } from '../components/Header';
 import { ButtonContainer } from '../components/ButtonContainer';
 import { Button, NavButton } from '../components/Button';
 import { useParams } from 'react-router-dom';
+import { ErrorDiv } from '../components/Form';
+import { Modal } from '../components/Modal';
 
 
 export const LessonDiv = styled.div`
@@ -13,8 +15,10 @@ export const LessonDiv = styled.div`
   flexDirection: 'column',
 `;
 
-export function LessonPageSide({ lesson_id, editLesson }) {
+export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
   const [lesson, setLesson] = useState({})
+  const [error, setError] = useState(null)
+  const [confirm, setConfirm] = useState(false)
 
   useEffect(() => {
     fetch(`${backendUrl}/lessons/lesson/${lesson_id}`, {
@@ -35,9 +39,44 @@ export function LessonPageSide({ lesson_id, editLesson }) {
     editLesson(lesson)
   }
 
+  const handleDelete = async () => {
+    fetch(`${backendUrl}/lessons/lesson/${lesson_id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.message === "Successful") {
+          onDelete()
+        } else if (res.message === "Unsuccessful") {
+          setError(res.errors)
+        }
+      })
+  }
+
+  const triggerConfirm = () => {
+    setConfirm(true)
+  }
+
+  const closeModal = () => {
+    setConfirm(false)
+  }
 
   return (
     <>
+      {error && (
+        <ErrorDiv>
+          {error}
+        </ErrorDiv>
+      )}
+      {confirm && (
+        <Modal>
+          Confirm Deletion?
+          <ButtonContainer>
+            <Button type="submit" onClick={handleDelete} >Delete</Button>
+            <Button type="button" onClick={closeModal} >Cancel</Button>
+          </ButtonContainer>
+        </Modal>)}
       <Header1 under={true}>
         {lesson.name}
       </Header1>
@@ -52,6 +91,7 @@ export function LessonPageSide({ lesson_id, editLesson }) {
       </ul>
       <ButtonContainer>
         <Button onClick={handleEdit}>Edit</Button>
+        <Button onClick={triggerConfirm}>Delete</Button>
         <NavButton to={`/dash/lessons/lesson/${lesson.lesson_id}`}>View</NavButton>
       </ButtonContainer>
     </>
