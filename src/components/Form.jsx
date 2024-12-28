@@ -31,6 +31,10 @@ const Input = styled.input`
     padding: 0.5rem;
     color: black;
     height: fit-content;
+    &:disabled {
+      border: solid 1px rgba(118, 118, 118, 0.3);
+      color: rgba(118, 118, 118, 0.3);
+    }
 `
 
 const Error = styled.p`
@@ -40,6 +44,8 @@ const Error = styled.p`
     grid-column: 1 / 3;
 `
 const Select = styled.select`
+    color: ${props => props.theme.dark};
+    background-color: ${props => props.theme.light};
     padding: 0.5rem;
     border-radius: 5px;
 `
@@ -53,12 +59,13 @@ export function Form({ method, children }) {
   </StyledForm>)
 }
 
-export function TextInput({ type = "text", id, value, onChange, text, error }) {
+export function TextInput({ type = "text", id, value, onChange, text, error, disabled = false }) {
   return (
     <StyledInput className='text-input'>
       <Label htmlFor={id}> {text}
       </Label>
       <Input
+        disabled={disabled}
         id={id}
         name={id}
         type={type}
@@ -87,13 +94,13 @@ export function TextArea({ onChange, id, error, value, text, rows }) {
   )
 }
 
-export function SelectInput({ text, error, value, id, options, onChange }) {
+export function SelectInput({ text, error, value, disabled = false, id, options, onChange }) {
 
   return (
     <StyledInput>
       <Label htmlFor={id}>{text}
       </Label>
-      <Select value={value} name={id} id={id} onChange={(event) => onChange(event.target.value)}>
+      <Select value={value} disabled={disabled} name={id} id={id} onChange={(event) => onChange(event.target.value)}>
         {options && options.map((option) =>
           <Option key={option.value} value={option.value}>{option.name || option.value}</Option>
         )}

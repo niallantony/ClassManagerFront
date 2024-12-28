@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Form, SelectInput, TextInput } from '../components/Form'
 import { MainButton } from '../components/Button'
 import { ButtonContainer } from '../components/ButtonContainer'
+import { Header1 } from '../components/Header'
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 export function NewExam({ submit, currentSubject, currentWeek }) {
@@ -81,6 +82,7 @@ export function NewExam({ submit, currentSubject, currentWeek }) {
 
   return (
     <>
+      <Header1>New Exam</Header1>
       <Form>
         <TextInput
           type='text'
