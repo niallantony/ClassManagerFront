@@ -9,7 +9,6 @@ const StyledTable = styled.table`
     font-family: "Unna", serif;
     border-spacing: 0;
     overflow: hidden;
-    margin: 1rem;
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
@@ -44,56 +43,56 @@ const TableCell = styled.td`
 `
 
 export function Table({ children, headers }) {
-    return (
-        <StyledTableContainer>
-            <StyledTable>
-                <thead>
-                    <tr>
-                        {headers.map((header) => {
-                            if (Object.keys(header).includes("width")) {
-                                return (
-                                    <TableHeader
-                                        width={header.width}
-                                        key={header}
-                                    >
-                                        {header.name}
-                                    </TableHeader>
-                                )
-                            } else {
-                                return (
-                                    <TableHeader key={header.name}>
-                                        {header.name}
-                                    </TableHeader>
-                                )
-                            }
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    {children}
-                </tbody>
-            </StyledTable>
-        </StyledTableContainer>
-    )
+  return (
+    <StyledTableContainer>
+      <StyledTable>
+        <thead>
+          <tr>
+            {headers.map((header) => {
+              if (Object.keys(header).includes("width")) {
+                return (
+                  <TableHeader
+                    width={header.width}
+                    key={header}
+                  >
+                    {header.name}
+                  </TableHeader>
+                )
+              } else {
+                return (
+                  <TableHeader key={header.name}>
+                    {header.name}
+                  </TableHeader>
+                )
+              }
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {children}
+        </tbody>
+      </StyledTable>
+    </StyledTableContainer>
+  )
 }
 
 export function TableRow({ headers, data, handleClick }) {
 
-    return (
-        <StyledTableRow onClick={handleClick}>
-            {headers.map((header) => {
-                return (
-                    <TableCell key={header}>{data[header]}</TableCell>
-                )
-            })}
-        </StyledTableRow>
-    )
+  return (
+    <StyledTableRow onClick={handleClick}>
+      {headers.map((header) => {
+        return (
+          <TableCell key={header}>{data[header]}</TableCell>
+        )
+      })}
+    </StyledTableRow>
+  )
 }
 
-export function AddNewButton({ handleNew }) {
-    return (
-        <StyledTableRow className="addnew" onClick={handleNew}>
-            <TableCell colSpan="2">Add new...</TableCell>
-        </StyledTableRow>
-    )
+export function AddNewButton({ width = 2, handleNew }) {
+  return (
+    <StyledTableRow className="addnew" onClick={handleNew}>
+      <TableCell colSpan={width}>Add new...</TableCell>
+    </StyledTableRow>
+  )
 }

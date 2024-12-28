@@ -41,6 +41,7 @@ const NavBarLink = styled(NavLink)`
         border: solid 1px ${props => props.theme.accent};
         border-left:dashed 1px ${props => props.theme.light};
         filter:brightness(110%);
+        color: ${props => props.theme.light};
     }
 `
 const NavButton = styled.button`
@@ -62,12 +63,12 @@ const NavButton = styled.button`
 
 
 export function Navbar({ handleLogout, user }) {
-    return (<Nav>
-        <MastHead>ClassRoom</MastHead>
-        <User>Welcome {user.firstname}</User>
-        <NavBarLink className="nav-link" to="subjects">Subjects</NavBarLink>
-        <NavBarLink className="nav-link" to="lessons">Lessons</NavBarLink>
-        <NavBarLink className="nav-link" to="students">Students</NavBarLink>
-        <NavButton onClick={handleLogout}>Log Out</NavButton>
-    </Nav>)
+  return (<Nav>
+    <MastHead>ClassRoom</MastHead>
+    <User>Welcome {user.firstname}</User>
+    <NavBarLink className="nav-link" to="subjects">Subjects</NavBarLink>
+    <NavBarLink className="nav-link" to="lessons">Lessons</NavBarLink>
+    <NavBarLink className="nav-link" to="students">Students</NavBarLink>
+    <NavButton onClick={handleLogout}>Log Out</NavButton>
+  </Nav>)
 }

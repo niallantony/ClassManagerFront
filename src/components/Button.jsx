@@ -42,40 +42,40 @@ const StyledNavButton = styled(NavLink)`
 
 
 export function Button({ children, onClick, type = "button" }) {
-    const handleClick = (e) => {
-        e.preventDefault();
-        onClick()
-    }
-    return (
-        <StyledButton
-            onClick={handleClick}
-            type={type}
-        >
-            {children}
-        </StyledButton>
-    )
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClick()
+  }
+  return (
+    <StyledButton
+      onClick={handleClick}
+      type={type}
+    >
+      {children}
+    </StyledButton>
+  )
 }
 
 export function NavButton({ children, to }) {
-    return (
-        <StyledNavButton to={to}>
-            {children}
-        </StyledNavButton>
-    )
+  return (
+    <StyledNavButton to={to}>
+      {children}
+    </StyledNavButton>
+  )
 }
 
 export function MainButton({ onClick, children, type = "button" }) {
-    const handleClick = (e) => {
-        e.preventDefault();
-        onClick()
-    }
-    return (
-        <MainStyledButton
-            onClick={handleClick}
-            type={type}
-        >
-            {children}
-        </MainStyledButton>
-    )
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClick()
+  }
+  return (
+    <MainStyledButton
+      onClick={handleClick}
+      type={type}
+    >
+      {children}
+    </MainStyledButton>
+  )
 }
 
