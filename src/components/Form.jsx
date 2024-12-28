@@ -52,6 +52,18 @@ const Select = styled.select`
 const Option = styled.option`
 
 `
+const StyledCheck = styled.input`
+    background: ${props => props.theme.light};
+    color-scheme: light;
+    padding: 0.5rem;
+    justify-self:start;
+    color: black;
+    height: fit-content;
+    &:disabled {
+      border: solid 1px rgba(118, 118, 118, 0.3);
+      color: rgba(118, 118, 118, 0.3);
+    }
+`
 
 export function Form({ method, children }) {
   return (<StyledForm method={method}>
@@ -71,6 +83,27 @@ export function TextInput({ type = "text", id, value, onChange, text, error, dis
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+      />
+      <Error className="error">{error}</Error>
+    </StyledInput>
+  )
+}
+
+export function CheckBox({ id, text, value, disabled = false, error, onChange }) {
+  return (
+    <StyledInput className='text-input'>
+      <Label htmlFor={id}> {text}
+      </Label>
+      <StyledCheck
+        disabled={disabled}
+        id={id}
+        name={id}
+        type="checkbox"
+        checked={value}
+        onChange={(event) => {
+          onChange(event.target.checked)
+          console.log(event)
+        }}
       />
       <Error className="error">{error}</Error>
     </StyledInput>

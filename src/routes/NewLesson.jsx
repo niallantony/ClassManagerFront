@@ -1,7 +1,7 @@
-import { SelectInput } from '../components/Form.jsx';
+import { CheckBox, SelectInput } from '../components/Form.jsx';
 import { MainButton } from '../components/Button.jsx';
 import { ButtonContainer } from '../components/ButtonContainer.jsx';
-import { Form, TextArea, TextInput } from '../components/Form.jsx'
+import { Form, TextInput } from '../components/Form.jsx'
 import { useEffect, useState } from "react";
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -16,6 +16,8 @@ export function NewLesson({ lessonSubmit }) {
   const [attendance, setAttendance] = useState("")
   const [errors, setErrors] = useState([])
   const [errorMessages, setErrorMessages] = useState([])
+  const [forceActive, setForceActive] = useState(false)
+
 
   useEffect(() => {
     fetch(`${backendUrl}/subjects/names`, {
@@ -25,6 +27,7 @@ export function NewLesson({ lessonSubmit }) {
       .then(res => res.json())
       .then(res => {
         setSubjects(res.subjects)
+        setSubject(res.subjects[0].value)
       })
       .catch(e => {
         console.log(e)
@@ -45,6 +48,7 @@ export function NewLesson({ lessonSubmit }) {
         class_start: classStart,
         classroom: classroom,
         attendance: attendance,
+        forceactive: forceActive,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
@@ -138,7 +142,14 @@ export function NewLesson({ lessonSubmit }) {
           id='subject'
           options={subjects}
           onChange={setSubject}
-          error={errorMessages.subject}
+          error={errorMessages.subject_id}
+        />
+        <CheckBox
+          text='Always Active'
+          value={forceActive}
+          id='forceactive'
+          onChanged={setForceActive}
+          error={errorMessages.forceactive}
         />
         <ButtonContainer>
           <MainButton type='button' onClick={handleSubmit} >Add</MainButton>
@@ -148,7 +159,6 @@ export function NewLesson({ lessonSubmit }) {
   )
 }
 
-// TODO: Include
 export function EditLesson({
   lessonSubmit,
   currentdetails
@@ -159,7 +169,7 @@ export function EditLesson({
   const [attendance, setAttendance] = useState(currentdetails.attendance)
   const [errors, setErrors] = useState([])
   const [errorMessages, setErrorMessages] = useState([])
-
+  const [forceActive, setForceActive] = useState(currentdetails.forceactive)
 
   const handleSubmit = async () => {
     fetch(`${backendUrl}/lessons/lesson/${currentdetails.lesson_id}`, {
@@ -170,6 +180,7 @@ export function EditLesson({
         class_start: classStart,
         classroom: classroom,
         attendance: attendance,
+        forceactive: forceActive,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
@@ -263,8 +274,15 @@ export function EditLesson({
           disabled={true}
           error={errorMessages.subject}
         />
+        <CheckBox
+          text='Always Active'
+          value={forceActive}
+          id='forceactive'
+          onChange={setForceActive}
+          error={errorMessages.forceactive}
+        />
         <ButtonContainer>
-          <MainButton type='button' onClick={handleSubmit} >Add</MainButton>
+          <MainButton type='button' onClick={handleSubmit} >Submit</MainButton>
         </ButtonContainer>
       </Form>
     </>
