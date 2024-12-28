@@ -53,7 +53,7 @@ export function Table({ children, headers }) {
                 return (
                   <TableHeader
                     width={header.width}
-                    key={header}
+                    key={header.name}
                   >
                     {header.name}
                   </TableHeader>
@@ -81,8 +81,18 @@ export function TableRow({ headers, data, handleClick }) {
   return (
     <StyledTableRow onClick={handleClick}>
       {headers.map((header) => {
+        // For deeper access to objects
+        const keys = header.split('.');
+        let content = data
+        for (let key of keys) {
+          if (content && Object.keys(content).includes(key)) {
+            content = content[key]
+          } else {
+            break
+          }
+        }
         return (
-          <TableCell key={header}>{data[header]}</TableCell>
+          <TableCell key={header}>{content}</TableCell>
         )
       })}
     </StyledTableRow>

@@ -6,7 +6,8 @@ import { Table, TableRow } from "../components/Table"
 import styled from "styled-components"
 import { SlideOut } from "../components/SlideOut"
 import { WeekInfo } from "../components/WeekInfo"
-import { NewExam } from "../routes/Exams"
+import { EditExam, NewExam } from "../routes/Exams"
+import { ExamPageSide } from "../components/ExamInfo"
 
 const SubjectDiv = styled.div`
     display: flex;
@@ -37,12 +38,20 @@ export function SubjectPage({ }) {
         console.log(e)
         navigate('/dash/subjects/notfound')
       })
-  }, [])
+  }, [slideContent])
 
   const handleClick = (week) => {
     setHidden(false)
-    setSlideContent(<WeekInfo week={week} newExam={(week) => handleExam(week, subject.subject_id)} subject={subject.subject_id} />)
+    setSlideContent(<WeekInfo week={week} viewExam={(exam_id) => handleViewExam(exam_id)} newExam={(week) => handleExam(week, subject.subject_id)} subject={subject.subject_id} />)
 
+  }
+
+  const handleViewExam = (exam_id) => {
+    setSlideContent(<ExamPageSide exam_id={exam_id} editExam={() => handleEditExam(exam_id)} onDelete={closeSlide} />)
+  }
+
+  const handleEditExam = (exam_id) => {
+    setSlideContent(<EditExam exam={exam_id} examSubmit={closeSlide} />)
   }
 
   const handleExam = (week, subject) => {
@@ -64,11 +73,11 @@ export function SubjectPage({ }) {
     <p>
       {subject.description}
     </p>
-    <Table headers={[{ name: "Weeks" }, { name: "Desc", width: "70%" }]}>
+    <Table headers={[{ name: "Week", width: "5%" }, { name: "Desc", width: "60%" }, { name: "Exam" }]}>
       {subject.subj_week && subject.subj_week.map((week) => {
         return (<TableRow
           key={week.week}
-          headers={["week", "description"]}
+          headers={["week", "description", "exam.name"]}
           data={week}
           handleClick={() => handleClick(week.week)}
         />)

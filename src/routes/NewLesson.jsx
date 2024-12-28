@@ -1,7 +1,7 @@
 import { SelectInput } from '../components/Form.jsx';
 import { MainButton } from '../components/Button.jsx';
 import { ButtonContainer } from '../components/ButtonContainer.jsx';
-import { Form, TextArea, TextInput } from '../components/Form.jsx'
+import { Form, TextInput } from '../components/Form.jsx'
 import { useEffect, useState } from "react";
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
