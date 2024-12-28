@@ -31,6 +31,10 @@ const Input = styled.input`
     padding: 0.5rem;
     color: black;
     height: fit-content;
+    &:disabled {
+      border: solid 1px rgba(118, 118, 118, 0.3);
+      color: rgba(118, 118, 118, 0.3);
+    }
 `
 
 const Error = styled.p`
