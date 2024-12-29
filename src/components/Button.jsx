@@ -40,6 +40,9 @@ const StyledNavButton = styled(NavLink)`
     }
 `
 
+const StyledHyperlink = styled.a`
+  color: ${props => props.theme.accent};
+`
 
 export function Button({ children, onClick, type = "button" }) {
   const handleClick = (e) => {
@@ -79,3 +82,14 @@ export function MainButton({ onClick, children, type = "button" }) {
   )
 }
 
+export function HyperLinkButton({ onClick, children }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClick()
+  }
+  return (
+    <StyledHyperlink onClick={handleClick}>
+      {children}
+    </StyledHyperlink>
+  )
+}

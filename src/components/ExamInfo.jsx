@@ -5,30 +5,27 @@ import styled from 'styled-components'
 import { Header1, Header2 } from '../components/Header';
 import { ButtonContainer } from '../components/ButtonContainer';
 import { Button, NavButton } from '../components/Button';
-import { useParams } from 'react-router-dom';
 import { ErrorDiv } from '../components/Form';
 import { Modal } from '../components/Modal';
-
 
 export const LessonDiv = styled.div`
   display:flex;
   flexDirection: 'column',
 `;
 
-export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
-  const [lesson, setLesson] = useState({})
+export function ExamPageSide({ exam_id, editExam, onDelete }) {
+  const [exam, setExam] = useState({})
   const [error, setError] = useState(null)
   const [confirm, setConfirm] = useState(false)
 
   useEffect(() => {
-    fetch(`${backendUrl}/lessons/lesson/${lesson_id}`, {
+    fetch(`${backendUrl}/subjects/exam/${exam_id}`, {
       method: "GET",
       credentials: "include"
     })
       .then((res) => res.json())
       .then(res => {
-        setLesson(res.lesson)
-        console.log(res)
+        setExam(res.exam)
       })
       .catch(e => {
         console.log(e)
@@ -36,11 +33,11 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
   }, [])
 
   const handleEdit = () => {
-    editLesson(lesson)
+    editExam(exam)
   }
 
   const handleDelete = async () => {
-    fetch(`${backendUrl}/lessons/lesson/${lesson_id}`, {
+    fetch(`${backendUrl}/subjects/exam/${exam_id}`, {
       method: "DELETE",
       credentials: "include",
     })
@@ -49,7 +46,8 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
         if (res.message === "Successful") {
           onDelete()
         } else if (res.message === "Unsuccessful") {
-          setError(res.errors)
+          setError(res.errors.name)
+          setConfirm(false)
         }
       })
   }
@@ -78,59 +76,21 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
           </ButtonContainer>
         </Modal>)}
       <Header1 under={true}>
-        {lesson.name}
+        {exam.name}
       </Header1>
       <Header2>
-        {lesson.subjects && lesson.subjects.name}
+        Type: {exam.type}
       </Header2>
       <ul>
-        <li>Classroom: {lesson.classroom}</li>
-        <li>Attendance: {lesson.attendance}</li>
-        <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
+        <li> Week: {exam.week} </li>
+        <li>Marks: {exam.marks}</li>
+        <li>Percent of Grade: {exam.percent}</li>
       </ul>
       <ButtonContainer>
         <Button onClick={handleEdit}>Edit</Button>
         <Button onClick={triggerConfirm}>Delete</Button>
-        <NavButton to={`/dash/lessons/lesson/${lesson.lesson_id}`}>View</NavButton>
       </ButtonContainer>
     </>
   )
 }
 
-export function LessonPage() {
-  const [lesson, setLesson] = useState({})
-  const params = useParams()
-
-  useEffect(() => {
-    fetch(`${backendUrl}/lessons/lesson/${params.lesson_id}`, {
-      method: "GET",
-      credentials: "include"
-    })
-      .then((res) => res.json())
-      .then(res => {
-        setLesson(res.lesson)
-        console.log(res)
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }, [])
-
-  return (
-    <div className='lesson-page'>
-      <Header1 under={true}>
-        {lesson.name}
-      </Header1>
-      <Header2>
-        {lesson.subjects && lesson.subjects.name}
-      </Header2>
-      <ul>
-        <li>Classroom: {lesson.classroom}</li>
-        <li>Attendance: {lesson.attendance}</li>
-        <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
-      </ul>
-    </div>
-  )
-}

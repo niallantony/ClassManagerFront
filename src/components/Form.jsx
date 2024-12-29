@@ -64,6 +64,13 @@ const StyledCheck = styled.input`
       color: rgba(118, 118, 118, 0.3);
     }
 `
+export function ErrorDiv({ children }) {
+  return (
+    <Error>
+      {children}
+    </Error>
+  )
+}
 
 export function Form({ method, children }) {
   return (<StyledForm method={method}>

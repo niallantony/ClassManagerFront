@@ -121,8 +121,8 @@ export function NewExam({ submit, currentSubject, currentWeek }) {
           value={type}
           text="Type"
           options={[
-            { value: "exam", name: "Exam" },
-            { value: "assignment", name: "Assignment" },
+            { value: "Exam", name: "Exam" },
+            { value: "Assignment", name: "Assignment" },
           ]}
           onChange={setType}
           error={errorMessages.type}
@@ -143,3 +143,145 @@ export function NewExam({ submit, currentSubject, currentWeek }) {
 }
 
 
+export function EditExam({
+  examSubmit,
+  exam
+}) {
+  const [name, setName] = useState("")
+  const [marks, setMarks] = useState("")
+  const [percent, setPercent] = useState("")
+  const [type, setType] = useState("")
+  const [week, setWeek] = useState("")
+  const [errors, setErrors] = useState([])
+  const [errorMessages, setErrorMessages] = useState([])
+  const [subject, setSubject] = useState("")
+  const [weeks, setWeeks] = useState([])
+
+
+  const handleSubmit = async () => {
+    fetch(`${backendUrl}/subjects/exam/${exam}`, {
+      method: "PUT",
+      credentials: 'include',
+      body: JSON.stringify({
+        name: name,
+        marks: marks,
+        percent: percent,
+        type: type,
+        week: week,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        if (res.errors) {
+          setErrors(res.errors)
+        }
+        if (res.message === "Successful") {
+          examSubmit()
+        } else {
+          if (res.errors.length > 0) {
+            setErrorMessages(res.errors)
+          }
+        }
+      })
+  }
+
+
+  useEffect(() => {
+    fetch(`${backendUrl}/subjects/exam/${exam}`, {
+      method: "GET",
+      credentials: 'include',
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        if (res.exam) {
+          setName(res.exam.name)
+          setMarks(res.exam.marks)
+          setPercent(res.exam.percent)
+          setType(res.exam.type)
+          setWeek(res.exam.week)
+          setSubject(res.exam.subject_id)
+        }
+      })
+  }, [])
+
+  useEffect(() => {
+    fetch(`${backendUrl}/subjects/subject/${subject}/weeks`, {
+      method: "GET",
+      credentials: "include"
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setWeeks(res.weeks)
+      })
+  }, [subject])
+
+
+  useEffect(() => {
+    const messages = {}
+    Object.values(errors).forEach((error) => {
+      messages[error.path] = error.msg
+    })
+    setErrorMessages(messages)
+  }, [errors])
+
+  return (
+    <>
+      <h2>Edit Exam</h2>
+      <Form >
+        <TextInput
+          type='text'
+          id='name'
+          text="Name"
+          value={name}
+          onChange={setName}
+          error={errorMessages.name}
+        />
+        <TextInput
+          type='text'
+          id='marks'
+          text="Marks"
+          value={marks}
+          error={errorMessages.marks}
+          onChange={setMarks}
+        />
+        <TextInput
+          type='percent'
+          id='percent'
+          text="Percent"
+          value={percent}
+          error={errorMessages.percent}
+          onChange={setPercent}
+        />
+        <SelectInput
+          id='type'
+          value={type}
+          text="Type"
+          options={[
+            { value: "Exam", name: "Exam" },
+            { value: "Assignment", name: "Assignment" },
+          ]}
+          onChange={setType}
+          error={errorMessages.type}
+        />
+        <SelectInput
+          id='week'
+          text="Week"
+          value={week}
+          options={weeks}
+          onChange={setWeek}
+          error={errorMessages.week}
+        />
+        <ButtonContainer>
+          <MainButton type='button' onClick={handleSubmit} >Submit</MainButton>
+        </ButtonContainer>
+      </Form>
+    </>
+  )
+}

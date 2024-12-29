@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 const backendUrl = import.meta.env.VITE_BACKEND_URL
-import { MainButton, Button, NavButton } from "./Button"
+import { MainButton, Button, NavButton, HyperLinkButton } from "./Button"
 import { ButtonContainer } from "./ButtonContainer"
 import { Form, TextArea } from "./Form"
 
 
-export function WeekInfo({ newExam, subject, week }) {
+export function WeekInfo({ newExam, subject, week, viewExam }) {
   const [weekData, setWeekData] = useState({})
   const [descriptionEdit, setDescriptionEdit] = useState(false)
 
@@ -28,15 +28,18 @@ export function WeekInfo({ newExam, subject, week }) {
     setDescriptionEdit(false)
   }
 
+
+
   return (<div>
     <h1>Week {weekData.week}</h1>
-    {descriptionEdit ? <EditWeek submit={handleSubmit} subject={subject} week={week} currentDescription={weekData.description} /> :
+    {descriptionEdit ? <EditWeek submit={handleSubmit} subject={subject} currentDescription={weekData.description} /> :
       (<>
         <p>{weekData.description}</p>
+        <p>Exam: {weekData.exam ? (<HyperLinkButton onClick={() => viewExam(weekData.exam.exam_id)}>{weekData.exam.name}</HyperLinkButton>) :
+          (<HyperLinkButton onClick={() => newExam(week)}>Add Exam</HyperLinkButton>)}</p>
         <ButtonContainer>
           <NavButton >View</NavButton>
           <Button type="button" onClick={handleEdit} >Edit</Button>
-          <Button type="button" onClick={() => newExam(week)} >Add Exam</Button>
         </ButtonContainer>
       </>)
     }
