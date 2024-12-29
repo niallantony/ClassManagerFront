@@ -47,10 +47,11 @@ export function Lessons() {
   return (<div className='lessons-table'>
     < Table headers={[{ name: "Name" }, { name: "Year/Semester" }, { name: "Subject" }, { name: "Students" }]} >
       {lessons && lessons.map((lesson) => {
+        console.log(lesson)
         return (
           <TableRow
             key={lesson.lesson_id}
-            headers={["name", "year_semester", "subject", "student_count"]}
+            headers={["name", "year_semester", "subject"]}
             data={lesson}
             handleClick={() => handleLesson(lesson.lesson_id)}
           />

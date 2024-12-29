@@ -87,7 +87,7 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
         <li>Classroom: {lesson.classroom}</li>
         <li>Attendance: {lesson.attendance}</li>
         <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).getHours()}:{new Date(lesson.class_start).getMinutes()}</li>
+        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
       </ul>
       <ButtonContainer>
         <Button onClick={handleEdit}>Edit</Button>
@@ -129,7 +129,7 @@ export function LessonPage() {
         <li>Classroom: {lesson.classroom}</li>
         <li>Attendance: {lesson.attendance}</li>
         <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).getHours()}:{new Date(lesson.class_start).getMinutes()}</li>
+        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
       </ul>
     </div>
   )
