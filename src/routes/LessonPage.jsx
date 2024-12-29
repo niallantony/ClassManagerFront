@@ -8,6 +8,7 @@ import { Button, NavButton } from '../components/Button';
 import { useParams } from 'react-router-dom';
 import { ErrorDiv } from '../components/Form';
 import { Modal } from '../components/Modal';
+import { InfoTag } from '../components/Tags';
 
 
 export const LessonDiv = styled.div`
@@ -83,6 +84,7 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
       <Header2>
         {lesson.subjects && lesson.subjects.name}
       </Header2>
+      {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
       <ul>
         <li>Classroom: {lesson.classroom}</li>
         <li>Attendance: {lesson.attendance}</li>
@@ -125,6 +127,7 @@ export function LessonPage() {
       <Header2>
         {lesson.subjects && lesson.subjects.name}
       </Header2>
+      {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
       <ul>
         <li>Classroom: {lesson.classroom}</li>
         <li>Attendance: {lesson.attendance}</li>

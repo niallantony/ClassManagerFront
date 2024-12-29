@@ -145,10 +145,10 @@ export function NewLesson({ lessonSubmit }) {
           error={errorMessages.subject_id}
         />
         <CheckBox
-          text='Always Active'
+          text='Active'
           value={forceActive}
           id='forceactive'
-          onChanged={setForceActive}
+          onChange={setForceActive}
           error={errorMessages.forceactive}
         />
         <ButtonContainer>
@@ -275,7 +275,7 @@ export function EditLesson({
           error={errorMessages.subject}
         />
         <CheckBox
-          text='Always Active'
+          text='Active'
           value={forceActive}
           id='forceactive'
           onChange={setForceActive}
