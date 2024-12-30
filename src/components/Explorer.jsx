@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import Delete from '../assets/delete.svg'
+import Add from '../assets/add.svg'
+import Close from '../assets/close.svg'
+import Edit from '../assets/edit.svg'
 
 export const Explorer = styled.div`
  border: solid 1px ${props => props.theme.accent};
@@ -17,6 +21,7 @@ padding: 1rem;
 
 const StyledView = styled.div`
 flex: 3;
+padding: 1rem;
 `
 
 const SelectChoice = styled.li`
@@ -45,10 +50,9 @@ margin-right: 1rem;
 `
 const Input = styled.input`
     background-color: ${props => props.theme.light};
-border: 0;
+    border: 0;
     border-bottom: solid 1px ${props => props.theme.accent};
-  
-    padding: 0.5rem;
+    margin: 0.5rem;
     color: black;
     height: fit-content;
     &:disabled {
@@ -61,38 +65,46 @@ const StyledInput = styled.div`
 
 `
 export const StyledAddRow = styled.div`
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
+  height: 2rem;
   justify-content: space-between;
+    border-bottom: solid 1px ${props => props.theme.accent};
 `
 
 export const RowButton = styled.button`
   border: 0;
   background-color: transparent; 
 color: ${props => props.theme.accent};
-width: 2rem;
+width: ${props => props.$wide ? "100%" : "2rem"};
 height: 2rem;
 padding: 0;
 &:hover {
-  transform: scale(1.5);
+  transform: ${props => props.$wide ? 'none' : 'scale(1.3)'};
+  background-color: ${props => props.$wide ? props.theme.hover : 'transparent'};
 }
 &:active {
   transform: translateY(5px);
+}
+> img {
+  padding: .5rem;
+  height: 1rem;
+  width: 1rem;
 }
 
 `
 export const RowInfo = styled.div`
 widht: 100%;
 display: grid;
-grid-template-columns: 1fr 6fr;
+grid-template-columns: 1fr 6fr 2rem 2rem;
 border-bottom: solid 1px ${props => props.theme.accent};
-margin: 0 1rem;
 padding: 0.5rem 0;
 &:hover {
   background-color: ${props => props.theme.hover}
 }
 > p {
   margin: 0 1rem;
+  line-height: 2rem;
 }
 `
 
@@ -115,6 +127,14 @@ export function ExplorerSelectChoice({ active = false, children, onClick, id }) 
     </SelectChoice>
   )
 
+}
+
+export function DeleteButton({ onClick }) {
+  return (
+    <RowButton onClick={onClick}>
+      <img src={Delete} />
+    </RowButton>
+  )
 }
 
 export function ExplorerView({ children }) {
@@ -145,9 +165,24 @@ export function ViewInput({ id, value, onChange, name, disabled = false }) {
 export function AddRow({ children, onCancel, onSubmit }) {
   return (
     <>
-      <RowButton onClick={onCancel}>&times;</RowButton>
+      <RowButton onClick={onCancel}><img src={Close} /></RowButton>
       {children}
-      <RowButton type="submit" onClick={onSubmit}>+</RowButton>
+      <AddButton onClick={onSubmit} />
     </>
+  )
+}
+
+export function AddButton({ wide = false, onClick }) {
+  return (
+    <RowButton $wide={wide} onClick={onClick}>
+      <img src={Add} />
+    </RowButton>
+  )
+}
+export function EditButton({ onClick }) {
+  return (
+    <RowButton onClick={onClick}>
+      <img src={Edit} />
+    </RowButton>
   )
 }
