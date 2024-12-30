@@ -12,6 +12,7 @@ import { SubjectPage } from './routes/SubjectPage'
 import { DisplayError } from './routes/DisplayError'
 import { Lessons } from './routes/Lessons'
 import { LessonPage } from './routes/LessonPage'
+import { StudentExplorer } from './routes/Students'
 
 const theme = {
   dark: "#353535",
@@ -43,6 +44,9 @@ function App() {
             <Route path="lessons">
               <Route index element={<Lessons />} />
               <Route path='lesson/:lesson_id' element={<LessonPage />} />
+            </Route>
+            <Route path="students">
+              <Route index element={<StudentExplorer />} />
             </Route>
             <Route path='*' element={<DisplayError code="404" message="Page Not Found" />} />
           </Route>
