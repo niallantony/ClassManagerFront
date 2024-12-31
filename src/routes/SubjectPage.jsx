@@ -1,20 +1,14 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 const backendUrl = import.meta.env.VITE_BACKEND_URL
-import { Header1, Header2 } from '../components/Header'
+import { Header1 } from '../components/Header'
 import { Table, TableRow } from "../components/Table"
-import styled from "styled-components"
 import { SlideOut } from "../components/SlideOut"
 import { WeekInfo } from "../components/WeekInfo"
 import { EditExam, NewExam } from "../routes/Exams"
 import { ExamPageSide } from "../components/ExamInfo"
-import { Card, InfoList, ListLabel } from "../components/Card"
+import { Card, Expandable, InfoList, ListLabel } from "../components/Card"
 import { InfoLayout } from "../components/Layout"
-
-const SubjectDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-`
 
 export function SubjectPage({ }) {
   const [subject, setSubject] = useState({})
@@ -72,7 +66,7 @@ export function SubjectPage({ }) {
       <InfoList>
         <ListLabel>Subject:</ListLabel><li> {subject.textbook}</li>
         <ListLabel>Duration:</ListLabel><li> {subject.subj_week && subject.subj_week.length} week course</li>
-        <ListLabel>Description:</ListLabel><li> {subject.description}</li>
+        <ListLabel>Description:</ListLabel><Expandable> {subject.description}</Expandable>
       </InfoList>
     </Card>
     <Table headers={[{ name: "Week", width: "5%" }, { name: "Desc", width: "60%" }, { name: "Exam" }]}>

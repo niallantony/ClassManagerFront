@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 
 
 
@@ -34,5 +35,46 @@ padding-left: 1rem;
 `
 export const ListLabel = styled.span`
   text-align: right;
-
 `
+
+const SmallDesc = styled.div`
+  max-height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`
+const ShowText = styled.a`
+  font-size: 0.8em;
+  text-decoration: underline;
+  color: ${props => props.theme.accent};
+  line-height: 0.8em;
+  text-align: center;
+  justify-self: center;
+`
+
+const ExpandableLi = styled.li`
+  display:flex;
+  flex-direction: column;
+`
+
+export const Expandable = ({ children }) => {
+  const [displayed, setDisplayed] = useState(false)
+  return (
+    <ExpandableLi>
+      {displayed ?
+        (
+          <>
+            <div>{children}</div>
+            <ShowText onClick={() => setDisplayed(false)}>Show Less</ShowText>
+          </>
+        ) :
+        (
+          <>
+            <SmallDesc>{children}</SmallDesc>
+            <ShowText onClick={() => setDisplayed(true)}>Show More</ShowText>
+          </>
+        )
+      }
+    </ExpandableLi>
+  )
+}

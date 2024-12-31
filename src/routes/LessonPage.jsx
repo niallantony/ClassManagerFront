@@ -11,6 +11,8 @@ import { Modal } from '../components/Modal';
 import { InfoTag } from '../components/Tags';
 import { AddButton, DeleteButton, EditButton, Explorer, ExplorerView, RowInfo, StyledAddRow } from '../components/Explorer';
 import { AddStudent } from './Students';
+import { InfoLayout } from '../components/Layout';
+import { Card, InfoList, ListLabel } from '../components/Card';
 
 
 export const LessonDiv = styled.div`
@@ -191,20 +193,20 @@ export function LessonPage() {
   }
 
   return (
-    <div className='lesson-page'>
-      <Header1 under={true}>
-        {lesson.name}
-      </Header1>
-      <Header2>
-        {lesson.subjects && lesson.subjects.name}
-      </Header2>
-      {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
-      <ul>
-        <li>Classroom: {lesson.classroom}</li>
-        <li>Attendance: {lesson.attendance}</li>
-        <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
-      </ul>
+    <InfoLayout>
+      <Card>
+        <Header1 under={true}>
+          {lesson.name}
+        </Header1>
+        {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
+        <InfoList>
+          <ListLabel>Subject: </ListLabel> <li>{lesson.subjects && lesson.subjects.name}</li>
+          <ListLabel>Classroom:</ListLabel><li> {lesson.classroom}</li>
+          <ListLabel>Attendance:</ListLabel><li> {lesson.attendance}</li>
+          <ListLabel>Year / Semester:</ListLabel><li> {lesson.year} / {lesson.semester}</li>
+          <ListLabel>Class starts:</ListLabel><li> {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
+        </InfoList>
+      </Card>
       <div>
         <Header2>
           Students:
@@ -260,6 +262,6 @@ export function LessonPage() {
 
         </Explorer>
       </div>
-    </div>
+    </InfoLayout>
   )
 }
