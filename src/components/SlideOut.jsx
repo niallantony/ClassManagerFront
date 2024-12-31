@@ -3,17 +3,21 @@ import styled from 'styled-components'
 const StyledSlide = styled.div`
     border-left: solid 1px ${props => props.theme.accent};
     right: 0;
-    transform: translateX(${props => props.$xOffset}px);
+    transform: translateX(${props => props.$hidden ? "450px" : "0"});
     top: 0;
     background-color: ${props => props.theme.light};
     height: 100%;
-    width: ${props => props.$width}px;
+    width: 450px;
     color: black;
     padding: 2rem;
     transition: transform 1s;
     overflow: hidden;
     position: absolute;
     box-sizing:border-box;
+    @media (max-width: 991px) {
+      width: 100dvw;
+      transform: translateX(${props => props.$hidden ? "100%" : "0"});
+    }
 `
 const ExitSlide = styled.button`
     position: absolute;
@@ -30,15 +34,13 @@ const ExitSlide = styled.button`
     }
 `
 
-export function SlideOut({ children, hidden = true, width = "400", closeSlide }) {
-    const xOffset = hidden ? width : 0
-    return (
-        <StyledSlide
-            $width={width}
-            $xOffset={xOffset}
-        >
-            <ExitSlide onClick={closeSlide}>x</ExitSlide>
-            {children}
-        </StyledSlide>
-    )
+export function SlideOut({ children, hidden = true, closeSlide }) {
+  return (
+    <StyledSlide
+      $hidden={hidden}
+    >
+      <ExitSlide onClick={closeSlide}>x</ExitSlide>
+      {children}
+    </StyledSlide>
+  )
 }

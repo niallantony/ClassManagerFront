@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import styled from 'styled-components'
-import { Header1, Header2 } from '../components/Header';
+import { Header1 } from '../components/Header';
 import { ButtonContainer } from '../components/ButtonContainer';
 import { Button, NavButton } from '../components/Button';
 import { useParams } from 'react-router-dom';
@@ -85,16 +85,14 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
       <Header1 under={true}>
         {lesson.name}
       </Header1>
-      <Header2>
-        {lesson.subjects && lesson.subjects.name}
-      </Header2>
       {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
-      <ul>
-        <li>Classroom: {lesson.classroom}</li>
-        <li>Attendance: {lesson.attendance}</li>
-        <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
-        <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
-      </ul>
+      <InfoList>
+        <ListLabel>Subject: </ListLabel> <li>{lesson.subjects && lesson.subjects.name}</li>
+        <ListLabel>Classroom:</ListLabel><li> {lesson.classroom}</li>
+        <ListLabel>Attendance:</ListLabel><li> {lesson.attendance}</li>
+        <ListLabel>Year / Semester:</ListLabel><li> {lesson.year} / {lesson.semester}</li>
+        <ListLabel>Class starts:</ListLabel><li> {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
+      </InfoList>
       <ButtonContainer>
         <Button onClick={handleEdit}>Edit</Button>
         <Button onClick={triggerConfirm}>Delete</Button>
@@ -208,9 +206,6 @@ export function LessonPage() {
         </InfoList>
       </Card>
       <div>
-        <Header2>
-          Students:
-        </Header2>
         <Explorer>
           {confirm && (
             <Modal>
