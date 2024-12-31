@@ -171,7 +171,7 @@ export function StudentExplorer() {
   )
 }
 
-function AddStudent({ method, onError, onClose, onSubmit, lesson_id, existingName = "", existingId = "" }) {
+export function AddStudent({ method, onError, onClose, onSubmit, lesson_id, existingName = "", existingId = "" }) {
   const [name, setName] = useState(existingName)
   const [studentId, setStudentId] = useState(existingId)
 
