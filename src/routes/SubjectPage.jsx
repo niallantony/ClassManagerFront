@@ -8,6 +8,8 @@ import { SlideOut } from "../components/SlideOut"
 import { WeekInfo } from "../components/WeekInfo"
 import { EditExam, NewExam } from "../routes/Exams"
 import { ExamPageSide } from "../components/ExamInfo"
+import { Card, InfoList, ListLabel } from "../components/Card"
+import { InfoLayout } from "../components/Layout"
 
 const SubjectDiv = styled.div`
     display: flex;
@@ -62,17 +64,17 @@ export function SubjectPage({ }) {
     setHidden(true)
     setSlideContent(<></>)
   }
-  return (<SubjectDiv>
-    <Header1 under={true}>
-      {subject.name}
-    </Header1>
-    <Header2>
-      {subject.textbook}
-    </Header2>
-    <p>{subject.subj_week && subject.subj_week.length} week course</p>
-    <p>
-      {subject.description}
-    </p>
+  return (<InfoLayout>
+    <Card>
+      <Header1 under={true}>
+        {subject.name}
+      </Header1>
+      <InfoList>
+        <ListLabel>Subject:</ListLabel><li> {subject.textbook}</li>
+        <ListLabel>Duration:</ListLabel><li> {subject.subj_week && subject.subj_week.length} week course</li>
+        <ListLabel>Description:</ListLabel><li> {subject.description}</li>
+      </InfoList>
+    </Card>
     <Table headers={[{ name: "Week", width: "5%" }, { name: "Desc", width: "60%" }, { name: "Exam" }]}>
       {subject.subj_week && subject.subj_week.map((week) => {
         return (<TableRow
@@ -86,5 +88,5 @@ export function SubjectPage({ }) {
     <SlideOut closeSlide={closeSlide} hidden={hidden}>
       {slideContent}
     </SlideOut>
-  </SubjectDiv>)
+  </InfoLayout>)
 }

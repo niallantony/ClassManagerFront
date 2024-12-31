@@ -5,23 +5,23 @@ const StyledTableContainer = styled.div`
 `
 
 const StyledTable = styled.table`
-    border-radius: 16px 16px 0 0;
     font-family: "Unna", serif;
     border-spacing: 0;
     overflow: hidden;
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
+margin: 1rem 0;
 `
 const TableHeader = styled.th`
-    border: solid 1px ${props => props.theme.accent};
     font-weight: 400;
-    background-color: ${props => props.theme.accent};
-    color: ${props => props.theme.light};
+    background-color: ${props => props.theme.light2};
+    color: ${props => props.theme.accent};
     border:0;
     text-align: left;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: solid 1px ${props => props.theme.accent};
+    border-top: solid 1px ${props => props.theme.accent};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
