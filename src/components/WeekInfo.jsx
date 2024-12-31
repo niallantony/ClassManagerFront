@@ -32,13 +32,12 @@ export function WeekInfo({ newExam, subject, week, viewExam }) {
 
   return (<div>
     <h1>Week {weekData.week}</h1>
-    {descriptionEdit ? <EditWeek submit={handleSubmit} subject={subject} currentDescription={weekData.description} /> :
+    {descriptionEdit ? <EditWeek week={weekData.week} submit={handleSubmit} subject={subject} currentDescription={weekData.description} /> :
       (<>
         <p>{weekData.description}</p>
         <p>Exam: {weekData.exam ? (<HyperLinkButton onClick={() => viewExam(weekData.exam.exam_id)}>{weekData.exam.name}</HyperLinkButton>) :
           (<HyperLinkButton onClick={() => newExam(week)}>Add Exam</HyperLinkButton>)}</p>
         <ButtonContainer>
-          <NavButton >View</NavButton>
           <Button type="button" onClick={handleEdit} >Edit</Button>
         </ButtonContainer>
       </>)
