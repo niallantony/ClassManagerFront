@@ -4,6 +4,8 @@ import { AddButton, AddRow, DeleteButton, EditButton, Explorer, ExplorerSelect, 
 import { Modal } from "../components/Modal";
 import { ButtonContainer } from "../components/ButtonContainer";
 import { Button } from "../components/Button";
+import { SlideOut } from "../components/SlideOut";
+import { StudentSlide } from "./StudentPage";
 
 export function StudentExplorer() {
 
@@ -14,6 +16,8 @@ export function StudentExplorer() {
   const [confirm, setConfirm] = useState(false)
   const [deleteSelection, setDeleteSelection] = useState(null)
   const [editSelection, setEditSelection] = useState(0)
+  const [slideContent, setSlideContent] = useState(<></>)
+  const [hidden, setHidden] = useState(true)
 
   useEffect(() => {
     fetchLessons()
@@ -103,6 +107,15 @@ export function StudentExplorer() {
     fetchStudents()
   }
 
+  const closeSlide = () => {
+    setHidden(true)
+    setSlideContent(<></>)
+  }
+
+  const handleStudentSelect = (id) => {
+    setSlideContent(<StudentSlide id={id} />)
+    setHidden(false)
+  }
 
   return (
     <Explorer>
@@ -147,7 +160,10 @@ export function StudentExplorer() {
             )
           }
           return (
-            <RowInfo key={student.student_id}>
+            <RowInfo
+              key={student.student_id}
+              onClick={() => handleStudentSelect(student.student_id)}
+            >
               <p>{student.student_id}</p>
               <p>{student.name}</p>
               <EditButton onClick={() => handleEdit(student.student_id)} />
@@ -167,6 +183,9 @@ export function StudentExplorer() {
           }
         </StyledAddRow>
       </ExplorerView>
+      <SlideOut closeSlide={closeSlide} hidden={hidden}>
+        {slideContent}
+      </SlideOut>
     </Explorer>
   )
 }
