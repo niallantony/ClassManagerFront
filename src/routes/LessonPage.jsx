@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import { ErrorDiv } from '../components/Form';
 import { Modal } from '../components/Modal';
 import { InfoTag } from '../components/Tags';
+import { AddButton, DeleteButton, EditButton, Explorer, ExplorerView, RowInfo, StyledAddRow } from '../components/Explorer';
+import { AddStudent } from './Students';
 
 
 export const LessonDiv = styled.div`
@@ -102,6 +104,12 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
 
 export function LessonPage() {
   const [lesson, setLesson] = useState({})
+  const [students, setStudents] = useState([])
+  const [errors, setErrors] = useState([])
+  const [confirm, setConfirm] = useState(false)
+  const [deleteSelection, setDeleteSelection] = useState(null)
+  const [editSelection, setEditSelection] = useState(0)
+  const [showAdd, setShowAdd] = useState(false)
   const params = useParams()
 
   useEffect(() => {
@@ -115,9 +123,72 @@ export function LessonPage() {
         console.log(res)
       })
       .catch(e => {
-        console.log(e)
+        setErrors(e)
       })
   }, [])
+
+  useEffect(() => {
+    fetchStudents()
+  }, [lesson])
+
+  const fetchStudents = () => {
+    fetch(`${backendUrl}/lessons/lesson/${lesson.lesson_id}/students`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(res => {
+        setStudents(res.students)
+      })
+      .catch(e => {
+        setErrors(e)
+      })
+  }
+
+  const handleDelete = () => {
+    fetch(`${backendUrl}/students/student/${deleteSelection.student_id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(() => {
+        fetchStudents()
+      })
+      .finally(() => {
+        setDeleteSelection(null)
+        closeModal()
+      })
+  }
+
+  const handleEdit = (student) => {
+    setShowAdd(false)
+    setEditSelection(student)
+  }
+
+  const handleEditSubmit = () => {
+    setEditSelection(0)
+    fetchStudents()
+  }
+
+  const triggerConfirm = (id) => {
+    setConfirm(true)
+    setDeleteSelection(id)
+  }
+
+  const closeModal = () => {
+    setConfirm(false)
+  }
+
+  const handleSubmit = () => {
+    fetchStudents()
+  }
+
+  const closeAdd = () => {
+    setShowAdd(false)
+  }
+  const displayError = () => {
+    console.log(errors)
+  }
 
   return (
     <div className='lesson-page'>
@@ -134,6 +205,61 @@ export function LessonPage() {
         <li>Year / Semester: {lesson.year} / {lesson.semester}</li>
         <li>Class starts: {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
       </ul>
+      <div>
+        <Header2>
+          Students:
+        </Header2>
+        <Explorer>
+          {confirm && (
+            <Modal>
+              Delete Student {deleteSelection && deleteSelection.name}?
+              <ButtonContainer>
+                <Button type="submit" onClick={handleDelete} >Delete</Button>
+                <Button type="button" onClick={closeModal} >Cancel</Button>
+              </ButtonContainer>
+            </Modal>)}
+          <ExplorerView>
+            {students.map(student => {
+              if (student.student_id === editSelection) {
+                return (
+                  <StyledAddRow>
+                    <AddStudent
+                      key={student.student_id}
+                      method="put"
+                      onSubmit={handleEditSubmit}
+                      onClose={() => setEditSelection(null)}
+                      onError={displayError}
+                      lesson_id={selected}
+                      existingName={student.name}
+                      existingId={student.student_id}
+                    />
+                  </StyledAddRow>
+                )
+              }
+              return (
+                <RowInfo key={student.student_id}>
+                  <p>{student.student_id}</p>
+                  <p>{student.name}</p>
+                  <EditButton onClick={() => handleEdit(student.student_id)} />
+                  <DeleteButton onClick={() => triggerConfirm(student)} />
+                </RowInfo>)
+            })}
+            <StyledAddRow>
+              {showAdd ?
+                (<AddStudent
+                  method="post"
+                  onSubmit={handleSubmit}
+                  onClose={closeAdd}
+                  onError={displayError}
+                  lesson_id={lesson.lesson_id}
+                />) :
+                (<AddButton wide={true} onClick={() => setShowAdd(true)} />)
+              }
+            </StyledAddRow>
+          </ExplorerView>
+
+        </Explorer>
+      </div>
     </div>
   )
 }
