@@ -1,6 +1,6 @@
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import { useEffect, useState } from "react";
-import { AddButton, AddRow, DeleteButton, EditButton, Explorer, ExplorerSelect, ExplorerSelectChoice, ExplorerView, RowInfo, StyledAddRow, ViewInput } from "../components/Explorer";
+import { AddButton, AddRow, DeleteButton, EditButton, Explorer, ExplorerMenuOption, ExplorerSelect, ExplorerSelectChoice, ExplorerSelectMenu, ExplorerView, RowInfo, StyledAddRow, ViewInput } from "../components/Explorer";
 import { Modal } from "../components/Modal";
 import { ButtonContainer } from "../components/ButtonContainer";
 import { Button } from "../components/Button";
@@ -18,6 +18,7 @@ export function StudentExplorer() {
   const [editSelection, setEditSelection] = useState(0)
   const [slideContent, setSlideContent] = useState(<></>)
   const [hidden, setHidden] = useState(true)
+  const [active, setActive] = useState(true)
 
   useEffect(() => {
     fetchLessons()
@@ -34,6 +35,15 @@ export function StudentExplorer() {
     fetchStudents()
   }, [selected])
 
+  useEffect(() => {
+    if (active) {
+      fetchLessons()
+    } else {
+      fetchAllLessons()
+      console.log("Fetching all. .")
+    }
+  }, [active])
+
   const fetchLessons = () => {
     fetch(`${backendUrl}/lessons`, {
       method: "GET",
@@ -43,7 +53,17 @@ export function StudentExplorer() {
       .then(res => {
         setLessons(res.lessons)
       })
+  }
 
+  const fetchAllLessons = () => {
+    fetch(`${backendUrl}/lessons?find=all`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(res => {
+        setLessons(res.lessons)
+      })
   }
 
   const fetchStudents = () => {
@@ -114,9 +134,16 @@ export function StudentExplorer() {
 
   const handleStudentSelect = (id) => {
     setSlideContent(<StudentSlide id={id} />)
-    setHidden(false)
   }
 
+  const changeView = (value) => {
+    console.log(value)
+    if (value === 'active') {
+      setActive(true)
+    } else if (value === 'all') {
+      setActive(false)
+    }
+  }
   return (
     <Explorer>
       {confirm && (
@@ -128,6 +155,10 @@ export function StudentExplorer() {
           </ButtonContainer>
         </Modal>)}
       <ExplorerSelect>
+        <ExplorerSelectMenu onChange={changeView}>
+          <ExplorerMenuOption value="active">Show Active</ExplorerMenuOption>
+          <ExplorerMenuOption value="all">Show All</ExplorerMenuOption>
+        </ExplorerSelectMenu>
         {lessons.map(lesson => {
           return (
             <ExplorerSelectChoice

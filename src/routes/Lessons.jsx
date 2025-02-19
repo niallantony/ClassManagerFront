@@ -10,27 +10,25 @@ export function Lessons() {
   const [slideContent, setSlideContent] = useState(<></>)
   const [lessons, setLessons] = useState([])
   const [hidden, setHidden] = useState(true)
-  const [show, setShow] = useState('active')
+  const [active, setActive] = useState(true)
 
   useEffect(() => {
-    fetch(`${backendUrl}/lessons`, {
+    const query = active ? '' : '?find=all';
+    console.log(query)
+    fetch(`${backendUrl}/lessons${query}`, {
       method: "GET",
       credentials: "include",
     })
       .then(res => res.json())
       .then((res) => {
         if (res.lessons) {
-          if (show === 'active') {
-            setLessons(res.lessons.filter(lesson => lesson.active === true))
-          } else if (show === 'inactive') {
-            setLessons(res.lessons.filter(lesson => lesson.active === false))
-          } else {
-            setLessons(res.lessons)
-          }
+          console.log(res.lessons)
+          setLessons(res.lessons)
         }
-      })
+      }
+      )
 
-  }, [slideContent, show])
+  }, [slideContent, active])
 
   const handleLesson = (lesson_id) => {
     setSlideContent(<LessonPageSide editLesson={handleEdit} onDelete={handleSubmit} lesson_id={lesson_id} />)
@@ -52,7 +50,25 @@ export function Lessons() {
     setHidden(false)
   }
 
+  const changeView = (value) => {
+    console.log(value)
+    if (value === 'active') {
+      setActive(true)
+    } else if (value === 'all') {
+      setActive(false)
+    }
+  }
+
   return (<div className='lessons-table'>
+    <SelectInput
+      text="Show"
+      id="show"
+      options={[
+        { value: "active" },
+        { value: "all" }
+      ]}
+      onChange={changeView}
+    />
     < Table headers={[{ name: "Name" }, { name: "Year/Semester" }, { name: "Subject" }, { name: "Students", width: "10%" }]} >
       {lessons && lessons.map((lesson) => {
         return (

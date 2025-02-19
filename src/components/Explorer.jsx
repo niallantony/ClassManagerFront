@@ -1,14 +1,16 @@
-import styled from 'styled-components';
+import { useState } from 'react';
 import Delete from '../assets/delete.svg'
 import Add from '../assets/add.svg'
 import Close from '../assets/close.svg'
 import Edit from '../assets/edit.svg'
+import styled from 'styled-components';
 
 export const Explorer = styled.div`
  border: solid 1px ${props => props.theme.accent};
 border-radius: 4px;
 height: 100%;
 display: flex;
+overflow: scroll;
 `;
 
 const StyledSelect = styled.div`
@@ -16,7 +18,7 @@ const StyledSelect = styled.div`
 flex: 1 ;
 display: flex;
 flex-direction: column;
-padding: 1rem;
+padding: 1rem 1rem 1rem 1rem;
 `;
 
 const StyledView = styled.div`
@@ -65,11 +67,14 @@ const StyledInput = styled.div`
 
 `
 export const StyledAddRow = styled.div`
-  padding: 0.5rem;
   display: flex;
-  height: 2rem;
+  height: 3rem;
   justify-content: space-between;
     border-bottom: solid 1px ${props => props.theme.accent};
+
+> button {
+  height: 3rem;
+}
 `
 
 export const RowButton = styled.button`
@@ -99,6 +104,7 @@ display: grid;
 grid-template-columns: 1fr 6fr 2rem 2rem;
 border-bottom: solid 1px ${props => props.theme.accent};
 padding: 0.5rem 0;
+text-wrap: nowrap;
 &:hover {
   background-color: ${props => props.theme.hover}
 }
@@ -106,6 +112,27 @@ padding: 0.5rem 0;
   margin: 0 1rem;
   line-height: 2rem;
 }
+`
+
+export const ExplorerHeader = styled.div`
+
+`
+
+const MenuFront = styled.select`
+color: black;
+background-color: ${props => props.theme.light};
+margin: 1rem;
+height: 2rem;
+box-sizing: border-box;
+&:hover {
+  color: ${props => props.theme.accent};
+}
+`
+const SelectLabel = styled.label`
+
+`
+export const ExplorerMenuOption = styled.option`
+
 `
 
 export function ExplorerSelect({ children }) {
@@ -127,6 +154,21 @@ export function ExplorerSelectChoice({ active = false, children, onClick, id }) 
     </SelectChoice>
   )
 
+}
+
+export function ExplorerSelectMenu({ children, text, onChange }) {
+  return (
+    <>
+      {text &&
+        <SelectLabel>
+          {text}
+        </SelectLabel>
+      }
+      <MenuFront onChange={(event) => { onChange(event.target.value) }} >
+        {children}
+      </MenuFront>
+    </>
+  )
 }
 
 export function DeleteButton({ onClick }) {
