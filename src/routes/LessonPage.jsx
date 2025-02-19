@@ -13,6 +13,8 @@ import { AddButton, DeleteButton, EditButton, Explorer, ExplorerView, RowInfo, S
 import { AddStudent } from './Students';
 import { InfoLayout } from '../components/Layout';
 import { Card, InfoList, ListLabel } from '../components/Card';
+import { StudentSlide } from './StudentPage';
+import { SlideOut } from '../components/SlideOut';
 
 
 export const LessonDiv = styled.div`
@@ -111,6 +113,8 @@ export function LessonPage() {
   const [editSelection, setEditSelection] = useState(0)
   const [showAdd, setShowAdd] = useState(false)
   const params = useParams()
+  const [hidden, setHidden] = useState(true)
+  const [slideContent, setSlideContent] = useState(<></>)
 
   useEffect(() => {
     fetch(`${backendUrl}/lessons/lesson/${params.lesson_id}`, {
@@ -190,6 +194,15 @@ export function LessonPage() {
     console.log(errors)
   }
 
+  const showStudentInfo = (id) => {
+    setSlideContent(<StudentSlide id={id} />)
+    setHidden(false)
+  }
+
+  const closeSlide = () => {
+    setHidden(true)
+  }
+
   return (
     <InfoLayout>
       <Card>
@@ -234,7 +247,9 @@ export function LessonPage() {
                 )
               }
               return (
-                <RowInfo key={student.student_id}>
+                <RowInfo key={student.student_id}
+                  onClick={() => { showStudentInfo(student.student_id) }}
+                >
                   <p>{student.student_id}</p>
                   <p>{student.name}</p>
                   <EditButton onClick={() => handleEdit(student.student_id)} />
@@ -257,6 +272,9 @@ export function LessonPage() {
 
         </Explorer>
       </div>
+      <SlideOut closeSlide={closeSlide} hidden={hidden}>
+        {slideContent}
+      </SlideOut>
     </InfoLayout>
   )
 }

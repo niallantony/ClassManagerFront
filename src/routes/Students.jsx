@@ -134,6 +134,7 @@ export function StudentExplorer() {
 
   const handleStudentSelect = (id) => {
     setSlideContent(<StudentSlide id={id} />)
+    setHidden(false)
   }
 
   const changeView = (value) => {
