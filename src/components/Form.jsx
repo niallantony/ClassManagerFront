@@ -64,9 +64,9 @@ const StyledCheck = styled.input`
       color: rgba(118, 118, 118, 0.3);
     }
 `
-export function ErrorDiv({ children }) {
+export function ErrorDiv({ children, absolute }) {
   return (
-    <Error>
+    <Error className={absolute ? 'absolute' : ''}>
       {children}
     </Error>
   )

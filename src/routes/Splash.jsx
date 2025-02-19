@@ -37,26 +37,26 @@ const Header = styled.h1`
     `
 
 export function Splash() {
-    const [visible, setVisible] = useState(1)
+  const [visible, setVisible] = useState(1)
 
-    return (
-        <BackSplash>
-            <SplashFrame>
-                <Header>
-                    ClassRoom
-                </Header>
-                <Slider height={visible === 0 ? '290' :
-                    visible === 1 ? '120' :
-                        '540'
-                } width='520' visible={visible}>
-                    <SignUp onCancel={() => setVisible(1)} />
-                    <ButtonContainer>
-                        <MainButton onClick={() => setVisible(0)} >Log in</MainButton>
-                        <Button onClick={() => setVisible(2)} >Sign Up</Button>
-                    </ButtonContainer>
-                    <Login onCancel={() => setVisible(1)} />
-                </Slider>
-            </SplashFrame>
-        </BackSplash>
-    )
+  return (
+    <BackSplash>
+      <SplashFrame>
+        <Header>
+          ClassRoom
+        </Header>
+        <Slider height={visible === 0 ? '290' :
+          visible === 1 ? '120' :
+            '540'
+        } width='520' visible={visible}>
+          <SignUp onCancel={() => setVisible(1)} />
+          <ButtonContainer>
+            <MainButton onClick={() => setVisible(0)} >Log in</MainButton>
+            <Button onClick={() => setVisible(2)} >Sign Up</Button>
+          </ButtonContainer>
+          <Login onCancel={() => setVisible(1)} />
+        </Slider>
+      </SplashFrame>
+    </BackSplash>
+  )
 }

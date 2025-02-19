@@ -80,5 +80,15 @@ body {
     display: flex;
     flex-direction: column;
 }
-/* Buttons */
 
+.absolute {
+  position:absolute;
+  bottom: 5rem;
+  left:0;
+  right:0;
+  text-align: center;
+}
+
+form {
+  position: relative;
+}
