@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router-dom"
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 import { Header1 } from '../components/Header'
 import { Table, TableRow } from "../components/Table"
@@ -15,8 +15,9 @@ export function SubjectPage({ }) {
   const params = useParams()
   const [hidden, setHidden] = useState(true)
   const [slideContent, setSlideContent] = useState(<></>)
-  const navigate = useNavigate()
   useEffect(() => {
+    console.log(params)
+    console.log(backendUrl)
     fetch(`${backendUrl}/subjects/subject/${params.subject_id}`, {
       method: "GET",
       credentials: 'include',
@@ -32,9 +33,9 @@ export function SubjectPage({ }) {
       })
       .catch(e => {
         console.log(e)
-        navigate('/dash/subjects/notfound')
+
       })
-  }, [slideContent])
+  }, [])
 
   const handleClick = (week) => {
     setHidden(false)
@@ -58,6 +59,8 @@ export function SubjectPage({ }) {
     setHidden(true)
     setSlideContent(<></>)
   }
+
+  console.log(subject.textbook)
   return (<InfoLayout>
     <Card>
       <Header1 under={true}>
