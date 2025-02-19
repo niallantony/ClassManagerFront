@@ -11,7 +11,7 @@ const StyledSlide = styled.div`
     color: black;
     padding: 2rem;
     transition: transform 1s;
-    overflow: hidden;
+    overflow: scroll;
     position: absolute;
     box-sizing:border-box;
     @media (max-width: 991px) {
