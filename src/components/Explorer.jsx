@@ -171,14 +171,6 @@ export function ExplorerSelectMenu({ children, text, onChange }) {
   )
 }
 
-export function DeleteButton({ onClick }) {
-  return (
-    <RowButton onClick={onClick}>
-      <img src={Delete} />
-    </RowButton>
-  )
-}
-
 export function ExplorerView({ children }) {
 
   return (
@@ -222,9 +214,28 @@ export function AddButton({ wide = false, onClick }) {
   )
 }
 export function EditButton({ onClick }) {
+  const handleClick = (e) => {
+    e.stopPropagation()
+    onClick()
+  }
+
   return (
-    <RowButton onClick={onClick}>
+    <RowButton onClick={handleClick}>
       <img src={Edit} />
     </RowButton>
   )
 }
+
+export function DeleteButton({ onClick }) {
+  const handleClick = (e) => {
+    e.stopPropagation()
+    onClick()
+  }
+
+  return (
+    <RowButton onClick={handleClick}>
+      <img src={Delete} />
+    </RowButton>
+  )
+}
+
