@@ -18,9 +18,9 @@ const StyledModal = styled.dialog`
 `
 export function Modal({ children }) {
 
-    return (
-        <StyledModal open="true">
-            {children}
-        </StyledModal>
-    )
+  return (
+    <StyledModal open={true}>
+      {children}
+    </StyledModal>
+  )
 }
