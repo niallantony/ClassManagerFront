@@ -39,7 +39,10 @@ export function SlideOut({ children, hidden = true, closeSlide }) {
     <StyledSlide
       $hidden={hidden}
     >
-      <ExitSlide onClick={closeSlide}>x</ExitSlide>
+      {!hidden &&
+        <ExitSlide onClick={closeSlide}>x</ExitSlide>
+      }
+
       {children}
     </StyledSlide>
   )
