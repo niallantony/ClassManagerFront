@@ -14,7 +14,6 @@ export function Lessons() {
 
   useEffect(() => {
     const query = active ? '' : '?find=all';
-    console.log(query)
     fetch(`${backendUrl}/lessons${query}`, {
       method: "GET",
       credentials: "include",
@@ -22,7 +21,6 @@ export function Lessons() {
       .then(res => res.json())
       .then((res) => {
         if (res.lessons) {
-          console.log(res.lessons)
           setLessons(res.lessons)
         }
       }

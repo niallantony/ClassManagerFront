@@ -44,6 +44,10 @@ export function StudentPage() {
   const params = useParams()
 
   useEffect(() => {
+    fetchStudent()
+  }, [])
+
+  const fetchStudent = () => {
     fetch(`${backendUrl}/students/student/${params.student_id}`, {
       method: "GET",
       credentials: "include"
@@ -52,8 +56,7 @@ export function StudentPage() {
       .then((res) => {
         setStudent(res.student)
       })
-  }, [])
-
+  }
 
   return (
     <InfoLayout>
@@ -67,7 +70,6 @@ export function StudentPage() {
           </>)
         }
       </Card>
-
     </InfoLayout>
   )
 

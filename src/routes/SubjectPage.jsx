@@ -16,8 +16,15 @@ export function SubjectPage({ }) {
   const [hidden, setHidden] = useState(true)
   const [slideContent, setSlideContent] = useState(<></>)
   useEffect(() => {
-    console.log(params)
-    console.log(backendUrl)
+    fetchSubject()
+  }, [])
+
+  const handleClick = (week) => {
+    setHidden(false)
+    setSlideContent(<WeekInfo week={week} viewExam={(exam_id) => handleViewExam(exam_id)} newExam={(week) => handleExam(week, subject.subject_id)} subject={subject.subject_id} />)
+  }
+
+  const fetchSubject = () => {
     fetch(`${backendUrl}/subjects/subject/${params.subject_id}`, {
       method: "GET",
       credentials: 'include',
@@ -33,14 +40,7 @@ export function SubjectPage({ }) {
       })
       .catch(e => {
         console.log(e)
-
       })
-  }, [])
-
-  const handleClick = (week) => {
-    setHidden(false)
-    setSlideContent(<WeekInfo week={week} viewExam={(exam_id) => handleViewExam(exam_id)} newExam={(week) => handleExam(week, subject.subject_id)} subject={subject.subject_id} />)
-
   }
 
   const handleViewExam = (exam_id) => {
@@ -58,6 +58,7 @@ export function SubjectPage({ }) {
   const closeSlide = () => {
     setHidden(true)
     setSlideContent(<></>)
+    fetchSubject()
   }
 
   console.log(subject.textbook)

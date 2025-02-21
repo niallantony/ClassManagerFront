@@ -35,7 +35,6 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
       .then((res) => res.json())
       .then(res => {
         setLesson(res.lesson)
-        console.log(res)
       })
       .catch(e => {
         console.log(e)
@@ -107,14 +106,11 @@ export function LessonPageSide({ lesson_id, editLesson, onDelete }) {
 export function LessonPage() {
   const [lesson, setLesson] = useState({})
   const [students, setStudents] = useState([])
-  const [errors, setErrors] = useState([])
-  const [confirm, setConfirm] = useState(false)
-  const [deleteSelection, setDeleteSelection] = useState(null)
-  const [editSelection, setEditSelection] = useState(0)
-  const [showAdd, setShowAdd] = useState(false)
   const params = useParams()
   const [hidden, setHidden] = useState(true)
   const [slideContent, setSlideContent] = useState(<></>)
+  const [exams, setExams] = useState([])
+  const [errors, setErrors] = useState([])
 
   useEffect(() => {
     fetch(`${backendUrl}/lessons/lesson/${params.lesson_id}`, {
@@ -124,18 +120,15 @@ export function LessonPage() {
       .then((res) => res.json())
       .then(res => {
         setLesson(res.lesson)
-        console.log(res)
+        fetchStudents(res.lesson)
+        fetchExams(res.lesson)
       })
       .catch(e => {
         setErrors(e)
       })
   }, [])
 
-  useEffect(() => {
-    fetchStudents()
-  }, [lesson])
-
-  const fetchStudents = () => {
+  const fetchStudents = (lesson) => {
     fetch(`${backendUrl}/lessons/lesson/${lesson.lesson_id}/students`, {
       method: "GET",
       credentials: "include",
@@ -149,50 +142,27 @@ export function LessonPage() {
       })
   }
 
-  const handleDelete = () => {
-    fetch(`${backendUrl}/students/student/${deleteSelection.student_id}`, {
-      method: "DELETE",
+  const refresh = () => {
+    fetchStudents(lesson)
+  }
+
+  const fetchExams = (lesson) => {
+    fetch(`${backendUrl}/subjects/subject/${lesson.subject_id}/exams`, {
+      method: "GET",
       credentials: "include",
     })
       .then(res => res.json())
-      .then(() => {
-        fetchStudents()
+      .then(res => {
+        setExams(res.exams)
       })
-      .finally(() => {
-        setDeleteSelection(null)
-        closeModal()
+      .catch(e => {
+        setErrors(e)
       })
+
   }
 
-  const handleEdit = (student) => {
-    setShowAdd(false)
-    setEditSelection(student)
-  }
 
-  const handleEditSubmit = () => {
-    setEditSelection(0)
-    fetchStudents()
-  }
 
-  const triggerConfirm = (id) => {
-    setConfirm(true)
-    setDeleteSelection(id)
-  }
-
-  const closeModal = () => {
-    setConfirm(false)
-  }
-
-  const handleSubmit = () => {
-    fetchStudents()
-  }
-
-  const closeAdd = () => {
-    setShowAdd(false)
-  }
-  const displayError = () => {
-    console.log(errors)
-  }
 
   const showStudentInfo = (id) => {
     setSlideContent(<StudentSlide id={id} />)
@@ -200,7 +170,7 @@ export function LessonPage() {
   }
 
   const closeSlide = () => {
-    setHidden(true)
+    setHidden()
   }
 
   return (
@@ -220,55 +190,13 @@ export function LessonPage() {
       </Card>
       <div>
         <Explorer>
-          {confirm && (
-            <Modal>
-              Delete Student {deleteSelection && deleteSelection.name}?
-              <ButtonContainer>
-                <Button type="submit" onClick={handleDelete} >Delete</Button>
-                <Button type="button" onClick={closeModal} >Cancel</Button>
-              </ButtonContainer>
-            </Modal>)}
-          <ExplorerView>
-            {students.map(student => {
-              if (student.student_id === editSelection) {
-                return (
-                  <StyledAddRow>
-                    <AddStudent
-                      key={student.student_id}
-                      method="put"
-                      onSubmit={handleEditSubmit}
-                      onClose={() => setEditSelection(null)}
-                      onError={displayError}
-                      lesson_id={selected}
-                      existingName={student.name}
-                      existingId={student.student_id}
-                    />
-                  </StyledAddRow>
-                )
-              }
-              return (
-                <RowInfo key={student.student_id}
-                  onClick={() => { showStudentInfo(student.student_id) }}
-                >
-                  <p>{student.student_id}</p>
-                  <p>{student.name}</p>
-                  <EditButton onClick={() => handleEdit(student.student_id)} />
-                  <DeleteButton onClick={() => triggerConfirm(student)} />
-                </RowInfo>)
-            })}
-            <StyledAddRow>
-              {showAdd ?
-                (<AddStudent
-                  method="post"
-                  onSubmit={handleSubmit}
-                  onClose={closeAdd}
-                  onError={displayError}
-                  lesson_id={lesson.lesson_id}
-                />) :
-                (<AddButton wide={true} onClick={() => setShowAdd(true)} />)
-              }
-            </StyledAddRow>
-          </ExplorerView>
+          <StudentExplorer
+            students={students}
+            showStudentInfo={showStudentInfo}
+            errors={errors}
+            refresh={refresh}
+            lesson={lesson}
+          />
 
         </Explorer>
       </div>
@@ -276,5 +204,112 @@ export function LessonPage() {
         {slideContent}
       </SlideOut>
     </InfoLayout>
+  )
+}
+
+const StudentExplorer = ({ students, showStudentInfo, errors, refresh, lesson }) => {
+  const [showAdd, setShowAdd] = useState(false)
+  const [deleteSelection, setDeleteSelection] = useState(null)
+  const [editSelection, setEditSelection] = useState(null)
+  const [confirm, setConfirm] = useState(false)
+
+  const handleEdit = (student) => {
+    setShowAdd(false)
+    setEditSelection(student)
+  }
+
+  const closeAdd = () => {
+    setShowAdd(false)
+  }
+
+  const displayError = () => {
+    console.log(errors)
+  }
+
+  const handleDelete = () => {
+    fetch(`${backendUrl}/students/student/${deleteSelection.student_id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(() => {
+        refresh()
+      })
+      .finally(() => {
+        setDeleteSelection(null)
+        closeModal()
+      })
+  }
+
+  const handleEditSubmit = () => {
+    setEditSelection(0)
+    refresh()
+  }
+
+  const triggerConfirm = (id) => {
+    setConfirm(true)
+    setDeleteSelection(id)
+  }
+
+  const closeModal = () => {
+    setConfirm(false)
+  }
+
+  const handleSubmit = () => {
+    refresh()
+  }
+
+  return (
+    <>
+      {confirm && (
+        <Modal>
+          Delete Student {deleteSelection && deleteSelection.name}?
+          <ButtonContainer>
+            <Button type="submit" onClick={handleDelete} >Delete</Button>
+            <Button type="button" onClick={closeModal} >Cancel</Button>
+          </ButtonContainer>
+        </Modal>)}
+      <ExplorerView>
+        {students.map(student => {
+          if (student.student_id === editSelection) {
+            return (
+              <StyledAddRow>
+                <AddStudent
+                  key={student.student_id}
+                  method="put"
+                  onSubmit={handleEditSubmit}
+                  onClose={() => setEditSelection(null)}
+                  onError={displayError}
+                  lesson_id={lesson.lesson_id}
+                  existingName={student.name}
+                  existingId={student.student_id}
+                />
+              </StyledAddRow>
+            )
+          }
+          return (
+            <RowInfo key={student.student_id}
+              onClick={() => { showStudentInfo(student.student_id) }}
+            >
+              <p>{student.student_id}</p>
+              <p>{student.name}</p>
+              <EditButton onClick={() => handleEdit(student.student_id)} />
+              <DeleteButton onClick={() => triggerConfirm(student)} />
+            </RowInfo>)
+        })}
+        <StyledAddRow>
+          {showAdd ?
+            (<AddStudent
+              method="post"
+              onSubmit={handleSubmit}
+              onClose={closeAdd}
+              onError={displayError}
+              lesson_id={lesson.lesson_id}
+            />) :
+            (<AddButton wide={true} onClick={() => setShowAdd(true)} />)
+          }
+        </StyledAddRow>
+      </ExplorerView>
+    </>
   )
 }
