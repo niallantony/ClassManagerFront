@@ -6,10 +6,22 @@ import { Header1 } from '../components/Header';
 import { ButtonContainer } from '../components/ButtonContainer';
 import { Button, NavButton } from '../components/Button';
 import { useParams } from 'react-router-dom';
-import { ErrorDiv } from '../components/Form';
+import { ErrorDiv, SelectInput } from '../components/Form';
 import { Modal } from '../components/Modal';
 import { InfoTag } from '../components/Tags';
-import { AddButton, DeleteButton, EditButton, Explorer, ExplorerView, RowInfo, StyledAddRow } from '../components/Explorer';
+import {
+  AddButton,
+  DeleteButton,
+  EditButton,
+  Explorer,
+  ExplorerView,
+  ExplorerMenuOption,
+  ExplorerSelect,
+  ExplorerSelectMenu,
+  ExplorerSelectChoice,
+  RowInfo,
+  StyledAddRow
+} from '../components/Explorer';
 import { AddStudent } from './Students';
 import { InfoLayout } from '../components/Layout';
 import { Card, InfoList, ListLabel } from '../components/Card';
@@ -111,6 +123,9 @@ export function LessonPage() {
   const [slideContent, setSlideContent] = useState(<></>)
   const [exams, setExams] = useState([])
   const [errors, setErrors] = useState([])
+  const [selectView, setSelectView] = useState(<></>)
+  const [selectedExam, setSelectedExam] = useState(null)
+  const [view, setView] = useState(<></>)
 
   useEffect(() => {
     fetch(`${backendUrl}/lessons/lesson/${params.lesson_id}`, {
@@ -127,6 +142,11 @@ export function LessonPage() {
         setErrors(e)
       })
   }, [])
+
+  useEffect(() => {
+    returnStudentView()
+  }, [students])
+
 
   const fetchStudents = (lesson) => {
     fetch(`${backendUrl}/lessons/lesson/${lesson.lesson_id}/students`, {
@@ -161,49 +181,173 @@ export function LessonPage() {
 
   }
 
+  const returnStudentView = () => {
+    setView(
+      <StudentExplorer
+        students={students}
+        showStudentInfo={showStudentInfo}
+        errors={errors}
+        refresh={refresh}
+        lesson={lesson}
+      />)
 
+  }
 
+  const changeSelectView = (value) => {
+    if (value === "exams") {
+      setSelectView(
+        <>
+          {exams.map(exam => {
+            return (
+              <ExplorerSelectChoice
+                active={exam.exam_id === selectedExam}
+                id={exam.exam_id}
+                onClick={handleExamSelect}
+                key={exam.exam_id}
+              >
+                {exam.name}
+              </ExplorerSelectChoice>
+            )
+          })}
+        </>
+      )
+    } else {
+      setSelectView(<></>)
+      returnStudentView()
+    }
 
+  }
+
+  const handleExamSelect = (exam) => {
+    setSelectedExam(exam)
+    setView(
+      <ExamExplorer
+        exam={exam}
+        students={students}
+        showStudentInfo={showStudentInfo}
+        refresh={refresh}
+        lesson={lesson}
+      />
+    )
+
+  }
   const showStudentInfo = (id) => {
     setSlideContent(<StudentSlide id={id} />)
     setHidden(false)
   }
 
   const closeSlide = () => {
-    setHidden()
+    setHidden(true)
   }
 
   return (
     <InfoLayout>
-      <Card>
-        <Header1 under={true}>
-          {lesson.name}
-        </Header1>
-        {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
-        <InfoList>
-          <ListLabel>Subject: </ListLabel> <li>{lesson.subjects && lesson.subjects.name}</li>
-          <ListLabel>Classroom:</ListLabel><li> {lesson.classroom}</li>
-          <ListLabel>Attendance:</ListLabel><li> {lesson.attendance}</li>
-          <ListLabel>Year / Semester:</ListLabel><li> {lesson.year} / {lesson.semester}</li>
-          <ListLabel>Class starts:</ListLabel><li> {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
-        </InfoList>
-      </Card>
+      <div>
+        <Card>
+          <Header1 under={true}>
+            {lesson.name}
+          </Header1>
+          {lesson.forceactive ? (<InfoTag>Active</InfoTag>) : (<InfoTag color="red">Inactive</InfoTag>)}
+          <InfoList>
+            <ListLabel>Subject: </ListLabel> <li>{lesson.subjects && lesson.subjects.name}</li>
+            <ListLabel>Classroom:</ListLabel><li> {lesson.classroom}</li>
+            <ListLabel>Attendance:</ListLabel><li> {lesson.attendance}</li>
+            <ListLabel>Year / Semester:</ListLabel><li> {lesson.year} / {lesson.semester}</li>
+            <ListLabel>Class starts:</ListLabel><li> {new Date(lesson.class_start).toTimeString().substring(0, 5)}</li>
+          </InfoList>
+        </Card>
+
+      </div>
+
       <div>
         <Explorer>
-          <StudentExplorer
-            students={students}
-            showStudentInfo={showStudentInfo}
-            errors={errors}
-            refresh={refresh}
-            lesson={lesson}
-          />
-
+          <ExplorerSelect>
+            <ExplorerSelectMenu onChange={changeSelectView}>
+              <ExplorerMenuOption value="students">Student Management</ExplorerMenuOption>
+              <ExplorerMenuOption value="exams">Exam Management</ExplorerMenuOption>
+            </ExplorerSelectMenu>
+            {selectView}
+          </ExplorerSelect>
+          {view}
         </Explorer>
       </div>
       <SlideOut closeSlide={closeSlide} hidden={hidden}>
         {slideContent}
       </SlideOut>
     </InfoLayout>
+  )
+}
+
+const ExamExplorer = ({ exam, students, showStudentInfo, refresh, lesson }) => {
+  const [results, setResults] = useState(null)
+  const [resultErrors, setResultErrors] = useState([])
+  const [editSelection, setEditSelection] = useState(null)
+
+  useEffect(() => {
+    fetchResults()
+  }, [])
+
+
+  const fetchResults = () => {
+    fetch(`${backendUrl}/lessons/lesson/${lesson.lesson_id}/results`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(res => {
+        setResults(res.results)
+      })
+      .catch(e => {
+        setResultErrors(e)
+      })
+  }
+
+  const handleEdit = (student) => {
+    setEditSelection(student)
+  }
+
+  const displayError = () => {
+    console.log(resultErrors)
+  }
+
+  const displayResult = (result) => {
+    return result ? result : "No Grade";
+  }
+
+  return (
+    <ExplorerView>
+      {students.map(student => {
+        if (student.student_id === editSelection) {
+          return (
+            <StyledAddRow>
+              <AddStudent
+                key={student.student_id}
+                method="put"
+                onSubmit={handleEditSubmit}
+                onClose={() => setEditSelection(null)}
+                onError={displayError}
+                lesson_id={lesson.lesson_id}
+                existingName={student.name}
+                existingId={student.student_id}
+              />
+            </StyledAddRow>
+          )
+        }
+        if (results !== null) {
+          return (
+            <RowInfo key={student.student_id}
+              onClick={() => { showStudentInfo(student.student_id) }}
+            >
+              <p>{student.student_id}</p>
+              <p>{student.name}</p>
+              <p>{displayResult(results[exam][String(student.student_id)])}</p>
+              <EditButton onClick={() => handleEdit(student.student_id)} />
+            </RowInfo>)
+        }
+      })}
+
+    </ExplorerView>
+
   )
 }
 
