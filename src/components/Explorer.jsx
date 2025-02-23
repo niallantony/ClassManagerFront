@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Delete from '../assets/delete.svg'
 import Add from '../assets/add.svg'
 import Close from '../assets/close.svg'
@@ -99,7 +98,7 @@ padding: 0;
 
 `
 export const RowInfo = styled.div`
-widht: 100%;
+width: 100%;
 display: grid;
 grid-template-columns: 1fr 6fr 2rem 2rem;
 border-bottom: solid 1px ${props => props.theme.accent};
@@ -114,26 +113,90 @@ text-wrap: nowrap;
 }
 `
 
+export const ExamRowInfo = styled.div`
+width: 100%;
+display: grid;
+grid-template-columns: 2fr 4fr 2fr;
+border-bottom: solid 1px ${props => props.theme.accent};
+padding: 0.5rem 0;
+text-wrap: nowrap;
+&:hover {
+  background-color: ${props => props.theme.hover}
+}
+> p {
+  margin: 0 1rem;
+  line-height: 2rem;
+}
+`
+
+export const ButtonRow = styled.div`
+width: 100%;
+display: grid;
+grid-template-columns: 6fr 2fr;
+border-bottom: solid 1px ${props => props.theme.accent};
+`
+
+export const ButtonRowBottom = styled.div`
+width: 100%;
+display: flex;
+justify-content: end;
+`
+
+
+export const ExplorerButton = styled.button`
+padding: 0.5rem 1rem;
+grid-column: 2 / 3;
+border-radius: 15px 15px 0 0 ;
+border: 0;
+text-decoration: underline;
+background-color: ${props => props.theme.accent};
+color: ${props => props.theme.light};
+margin: 0;
+&:hover {
+  filter: brightness(115%);
+}
+&:active {
+  filter: brightness(125%);
+}
+`
+
+export const ExplorerButtonBottom = styled.button`
+padding: 0.5rem 1rem;
+border: 0;
+text-decoration: underline;
+background-color: ${props => props.theme.accent};
+color: ${props => props.theme.light};
+margin: 0 0 0 1rem;
+&:hover {
+  filter: brightness(115%);
+}
+&:active {
+  filter: brightness(125%);
+}
+border-radius: 0 0 15px 15px
+`
+
+
 export const ExplorerHeader = styled.div`
 
 `
 
 const MenuFront = styled.select`
 color: black;
-background-color: ${props => props.theme.light};
+background - color: ${props => props.theme.light};
 margin: 1rem;
 height: 2rem;
-box-sizing: border-box;
+box - sizing: border - box;
 &:hover {
   color: ${props => props.theme.accent};
 }
 `
 const SelectLabel = styled.label`
 
-`
+  `
 export const ExplorerMenuOption = styled.option`
 
-`
+  `
 
 export function ExplorerSelect({ children }) {
 

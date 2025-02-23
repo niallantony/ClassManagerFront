@@ -96,6 +96,21 @@ export function TextInput({ type = "text", id, value, onChange, text, error, dis
   )
 }
 
+export function JustInput({ id, value, onChange }) {
+  return (
+    <StyledInput className='text-input'>
+      <Input
+        id={id}
+        name={id}
+        type="text"
+        value={value}
+        onChange={(event) => onChange(event.target)}
+      />
+    </StyledInput>
+
+  )
+}
+
 export function CheckBox({ id, text, value, disabled = false, error, onChange }) {
   return (
     <StyledInput className='text-input'>
