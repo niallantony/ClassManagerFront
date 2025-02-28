@@ -21,6 +21,10 @@ const StyledInput = styled.div`
     grid-template-columns: 1fr 2fr;
     position: relative;
 `
+const StyledInputNoLabel = styled.div`
+    position: relative;
+    height: 100%;
+`
 const Label = styled.label`
 
 `
@@ -149,6 +153,20 @@ export function TextArea({ onChange, id, error, value, text, rows }) {
   )
 }
 
+export function TextAreaNoLabel({ onChange, id, error, value }) {
+  return (
+    <StyledInputNoLabel className='text-input'>
+      <StyledTextArea
+        style={{ width: "100%", height: "100%" }}
+        id={id}
+        name={id}
+        value={value || ""}
+        onChange={(event) => onChange(event.target.value)}
+      ></StyledTextArea>
+      <Error className="error">{error}</Error>
+    </StyledInputNoLabel>
+  )
+}
 export function SelectInput({ text, error, value, disabled = false, id, options, onChange }) {
 
   return (

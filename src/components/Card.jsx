@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { DeleteButton, EditButton, SaveButton } from './Explorer';
+import { Button } from './Button';
 
 
 
@@ -21,6 +23,7 @@ box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 > p {
   margin: 0;
 }
+align-self:start;
 `;
 
 export const InfoList = styled.ul`
@@ -57,6 +60,31 @@ const ExpandableLi = styled.li`
   flex-direction: column;
 `
 
+const SmallDate = styled.div`
+  font-size: 0.8em;
+  color: ${props => props.theme.accent};
+
+`
+
+const NoteLayout = styled.div`
+  display:grid;
+  grid-template-columns: 5fr fit-content(100%) fit-content(100%);
+`
+
+const InfoPanel = styled.div`
+  grid-column: 1 / 4;
+  border-top: solid 1px ${props => props.theme.hover}
+  width: 100%;
+  padding:1rem;
+`
+
+export const CardWall = styled.div`
+
+  display:grid;
+
+`
+
+
 export const Expandable = ({ children }) => {
   const [displayed, setDisplayed] = useState(false)
   return (
@@ -76,5 +104,41 @@ export const Expandable = ({ children }) => {
         )
       }
     </ExpandableLi>
+  )
+}
+
+export const NoteCard = ({ text, onDelete, onEdit, date }) => {
+  const handleDate = (timestamp) => {
+    const [date, time] = timestamp.split("T")
+    const [hours, minutes, _] = time.split(":")
+    return `${date} ${hours}:${minutes}`
+
+  }
+  return (
+    <Card style={{ width: "100%" }}>
+      <NoteLayout>
+        <SmallDate>{handleDate(date)}</SmallDate>
+        <EditButton onClick={onEdit}></EditButton>
+        <DeleteButton onClick={onDelete}></DeleteButton>
+        <InfoPanel>{text}</InfoPanel>
+      </NoteLayout>
+    </Card>
+  )
+}
+
+export const EditNoteCard = ({ children, date, onSubmit }) => {
+  const handleDate = (timestamp) => {
+    const [date, time] = timestamp.split("T")
+    const [hours, minutes, _] = time.split(":")
+    return `${date} ${hours}:${minutes}`
+  }
+  return (
+    <Card style={{ width: "100%" }}>
+      <NoteLayout>
+        <SmallDate>{handleDate(date)}</SmallDate>
+        <SaveButton onClick={onSubmit} />
+        <InfoPanel>{children}</InfoPanel>
+      </NoteLayout>
+    </Card>
   )
 }

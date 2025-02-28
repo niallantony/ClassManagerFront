@@ -2,6 +2,7 @@ import Delete from '../assets/delete.svg'
 import Add from '../assets/add.svg'
 import Close from '../assets/close.svg'
 import Edit from '../assets/edit.svg'
+import Save from '../assets/save.svg'
 import styled from 'styled-components';
 
 export const Explorer = styled.div`
@@ -302,3 +303,15 @@ export function DeleteButton({ onClick }) {
   )
 }
 
+export function SaveButton({ onClick }) {
+  const handleClick = (e) => {
+    e.stopPropagation()
+    onClick()
+  }
+
+  return (
+    <RowButton onClick={handleClick}>
+      <img src={Save} />
+    </RowButton>
+  )
+}
